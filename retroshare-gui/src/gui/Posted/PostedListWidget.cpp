@@ -41,19 +41,23 @@ PostedListWidget::PostedListWidget(const RsGxsGroupId &postedId, QWidget *parent
 	ui->setupUi(this);
 
 	/* Setup UI helper */
-	mStateHelper->addWidget(mTokenTypeAllPosts, ui->comboBox);
+	mStateHelper->addWidget(mTokenTypeAllPosts, ui->hotSortButton);
+	mStateHelper->addWidget(mTokenTypeAllPosts, ui->newSortButton);
+	mStateHelper->addWidget(mTokenTypeAllPosts, ui->topSortButton);
 
-	mStateHelper->addWidget(mTokenTypePosts, ui->comboBox);
+	mStateHelper->addWidget(mTokenTypePosts, ui->hotSortButton);
+	mStateHelper->addWidget(mTokenTypePosts, ui->newSortButton);
+	mStateHelper->addWidget(mTokenTypePosts, ui->topSortButton);
 
 	mStateHelper->addWidget(mTokenTypeGroupData, ui->submitPostButton);
 	mStateHelper->addWidget(mTokenTypeGroupData, ui->subscribeToolButton);
 
+	connect(ui->hotSortButton, SIGNAL(clicked()), this, SLOT(getRankings()));
+	connect(ui->newSortButton, SIGNAL(clicked()), this, SLOT(getRankings()));
+	connect(ui->topSortButton, SIGNAL(clicked()), this, SLOT(getRankings()));
 	connect(ui->nextButton, SIGNAL(clicked()), this, SLOT(showNext()));
 	connect(ui->prevButton, SIGNAL(clicked()), this, SLOT(showPrev()));
 	connect(ui->subscribeToolButton, SIGNAL(subscribe(bool)), this, SLOT(subscribeGroup(bool)));
-	
-	connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(getRankings(int)));
-
 
 	// default sort method.
 	mSortMethod = RsPosted::HotRankType;
@@ -62,6 +66,8 @@ PostedListWidget::PostedListWidget(const RsGxsGroupId &postedId, QWidget *parent
 	mPostShow = POSTED_DEFAULT_LISTING_LENGTH;
 
 	mTokenTypeVote = nextTokenType();
+
+	ui->hotSortButton->setChecked(true);
 
 	/* fill in the available OwnIds for signing */
 	ui->idChooser->loadIds(IDCHOOSER_ID_REQUIRED, RsGxsId());
@@ -181,7 +187,7 @@ void PostedListWidget::updateShowText()
 	ui->showLabel->setText(showText);
 }
 
-void PostedListWidget::getRankings(int i)
+void PostedListWidget::getRankings()
 {
 	if (groupId().isNull())
 		return;
@@ -190,19 +196,23 @@ void PostedListWidget::getRankings(int i)
 	std::cerr << std::endl;
 
 	int oldSortMethod = mSortMethod;
-	
-	switch(i)
+
+	QObject* button = sender();
+	if(button == ui->hotSortButton)
 	{
-	default:
-	case 0:
 		mSortMethod = RsPosted::HotRankType;
-		break;
-	case 1:
-		mSortMethod = RsPosted::NewRankType;
-		break;
-	case 2:
+	}
+	else if(button == ui->topSortButton)
+	{
 		mSortMethod = RsPosted::TopRankType;
-		break;
+	}
+	else if(button == ui->newSortButton)
+	{
+		mSortMethod = RsPosted::NewRankType;
+	}
+	else
+	{
+		return;
 	}
 
 	if (oldSortMethod != mSortMethod)
