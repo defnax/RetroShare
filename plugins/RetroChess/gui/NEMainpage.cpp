@@ -15,7 +15,6 @@
 #include <QMenu>
 
 #include "gui/chat/ChatDialog.h"
-#include "backgammon/mainwindow.h"
 #include "qcheckers/src/toplevel.h"
 
 NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
@@ -243,13 +242,6 @@ void NEMainpage::friendSelectionChanged()
 
 	FriendSelectionWidget::IdType idType;
 	ui->friendSelectionWidget->selectedId(idType);
-
-}
-
-void NEMainpage::on_pushButton_clicked()
-{
-	MainWindow *backgammonwindow = new MainWindow();
-	backgammonwindow->show();
 
 }
 

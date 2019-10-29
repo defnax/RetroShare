@@ -132,7 +132,21 @@
            <string>Invite Friends</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="1" column="3">
+           <item row="1" column="1">
+            <widget class="QPushButton" name="checkersButton">
+             <property name="text">
+              <string>QCheckers</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="3">
+            <widget class="FriendSelectionWidget" name="friendSelectionWidget" native="true">
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
             <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -145,31 +159,10 @@
              </property>
             </spacer>
            </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton">
-             <property name="text">
-              <string>Backgammon</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QPushButton" name="filterPeersButton">
              <property name="text">
               <string>CheckPeers</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="4">
-            <widget class="FriendSelectionWidget" name="friendSelectionWidget" native="true">
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="checkersButton">
-             <property name="text">
-              <string>QCheckers</string>
              </property>
             </widget>
            </item>

@@ -33,7 +33,7 @@ win32 {
 
 QMAKE_CXXFLAGS *= -Wall
 
-SOURCES = RetroChessPlugin.cpp               \
+SOURCES += RetroChessPlugin.cpp               \
           services/p3RetroChess.cc           \
           services/rsRetroChessItems.cc \
     gui/NEMainpage.cpp \
@@ -43,7 +43,7 @@ SOURCES = RetroChessPlugin.cpp               \
     gui/validation.cpp \
     gui/RetroChessChatWidgetHolder.cpp
 
-HEADERS = RetroChessPlugin.h                 \
+HEADERS += RetroChessPlugin.h                 \
           services/p3RetroChess.h            \
           services/rsRetroChessItems.h       \
           interface/rsRetroChess.h \
@@ -56,7 +56,7 @@ HEADERS = RetroChessPlugin.h                 \
 
 
 
-RESOURCES = gui/RetroChess_images.qrc
+RESOURCES += gui/RetroChess_images.qrc
 
 FORMS += \
     gui/NEMainpage.ui \
@@ -65,7 +65,7 @@ FORMS += \
 	
 #################################### QCheckers #####################################
 
-HEADERS	= qcheckers/src/pdn.h \
+HEADERS	+= qcheckers/src/pdn.h \
 	    qcheckers/src/checkers.h \
 		qcheckers/src/echeckers.h \
 		qcheckers/src/rcheckers.h \
@@ -83,7 +83,7 @@ HEADERS	= qcheckers/src/pdn.h \
 		qcheckers/src/computerplayer.h
 	   
 
-SOURCES	= qcheckers/src/pdn.cc \
+SOURCES	+= qcheckers/src/pdn.cc \
 	    qcheckers/src/checkers.cc \
 		qcheckers/src/echeckers.cc \
 		qcheckers/src/rcheckers.cc \
@@ -98,4 +98,4 @@ SOURCES	= qcheckers/src/pdn.cc \
 	    qcheckers/src/humanplayer.cc \
 		qcheckers/src/computerplayer.cc
 
-RESOURCES = qcheckers/qcheckers.qrc qcheckers/icons.qrc
+RESOURCES += qcheckers/qcheckers.qrc qcheckers/icons.qrc
