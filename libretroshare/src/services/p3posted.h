@@ -109,6 +109,10 @@ virtual void setMessageReadStatus(uint32_t& token, const RsGxsGrpMsgIdPair& msgI
 		if (mCommentService->acknowledgeVote(token, msgId)) return true;
 		return acknowledgeMsg(token, msgId);
 	}
+	
+	// File Interface
+	virtual bool ExtraFileHash(const std::string& path);
+	virtual bool ExtraFileRemove(const RsFileHash &hash);
 };
 
 #endif 

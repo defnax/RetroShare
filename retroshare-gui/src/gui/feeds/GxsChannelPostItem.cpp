@@ -551,6 +551,10 @@ void GxsChannelPostItem::fill()
 		SubFileItem *fi = new SubFileItem(it->mHash, it->mName, path, it->mSize, SFI_STATE_REMOTE | SFI_TYPE_CHANNEL, RsPeerId());
 		mFileItems.push_back(fi);
 		
+		
+		if (!misc::isPicture(QFileInfo(QString::fromUtf8(it->mName.c_str())).suffix()))
+			fi->picturetype();
+
 		/* check if the file is a media file */
 		if (!misc::isPreviewable(QFileInfo(QString::fromUtf8(it->mName.c_str())).suffix()))
 		{ 

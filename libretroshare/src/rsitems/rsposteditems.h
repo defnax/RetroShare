@@ -23,6 +23,7 @@
 #define RSPOSTEDITEMS_H
 
 #include "rsitems/rsserviceids.h"
+#include "serialiser/rstlvfileitem.h"
 #include "rsitems/rsgxscommentitems.h"
 #include "rsitems/rsgxsitems.h"
 #include "serialiser/rstlvimage.h"
@@ -66,6 +67,7 @@ public:
 	bool toPostedPost(RsPostedPost &post, bool moveImage);
 
 	RsPostedPost mPost;
+	RsTlvFileSet mAttachment;
 	RsTlvImage mImage;
 };
 

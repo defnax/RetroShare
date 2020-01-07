@@ -82,6 +82,8 @@ public slots:
 	void play();
 	void mediatype();
 	void copyLink();
+	void loadpicture();
+	void picturetype();
 
 private slots:
 	void toggle();

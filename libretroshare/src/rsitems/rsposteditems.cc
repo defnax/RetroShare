@@ -21,8 +21,9 @@
  *******************************************************************************/
 #include "rsitems/rsposteditems.h"
 #include "serialiser/rstypeserializer.h"
+#include "serialiser/rstlvbase.h"
 
-
+#include "util/rsdir.h"
 
 void RsGxsPostedPostItem::serial_process(RsGenericSerializer::SerializeJob j,RsGenericSerializer::SerializeContext& ctx)
 {
@@ -40,6 +41,7 @@ void RsGxsPostedPostItem::serial_process(RsGenericSerializer::SerializeJob j,RsG
 		return ;
 
 	RsTypeSerializer::serial_process<RsTlvItem>(j,ctx,mImage,"mImage") ;
+	RsTypeSerializer::serial_process<RsTlvItem>(j,ctx,mAttachment,"mAttachment") ;
 }
 
 void RsGxsPostedGroupItem::serial_process(RsGenericSerializer::SerializeJob j,RsGenericSerializer::SerializeContext& ctx)
@@ -87,6 +89,15 @@ bool RsGxsPostedPostItem::fromPostedPost(RsPostedPost &post, bool moveImage)
 		mImage.binData.setBinData(post.mImage.mData, post.mImage.mSize);
 	}
 
+	std::list<RsGxsFile>::iterator fit;
+	for(fit = post.mFiles.begin(); fit != post.mFiles.end(); ++fit)
+	{
+		RsTlvFileItem fi;
+		fi.name = fit->mName;
+		fi.filesize = fit->mSize;
+		fi.hash = fit->mHash;
+		mAttachment.items.push_back(fi);
+	}
 	return true;
 }
 
@@ -106,6 +117,20 @@ bool RsGxsPostedPostItem::toPostedPost(RsPostedPost &post, bool moveImage)
 		post.mImage.copy((uint8_t *) mImage.binData.bin_data, mImage.binData.bin_len);
 	}
 
+	post.mCount = 0;
+	post.mSize = 0;
+	std::list<RsTlvFileItem>::iterator fit;
+	for(fit = mAttachment.items.begin(); fit != mAttachment.items.end(); ++fit)
+	{
+		RsGxsFile fi;
+		fi.mName = RsDirUtil::getTopDir(fit->name);
+		fi.mSize  = fit->filesize;
+		fi.mHash  = fit->hash;
+
+		post.mFiles.push_back(fi);
+		post.mCount++;
+		post.mSize += fi.mSize;
+	}
 	return true;
 }
 
@@ -114,6 +139,7 @@ void RsGxsPostedPostItem::clear()
 	mPost.mLink.clear();
 	mPost.mNotes.clear();
 	mImage.TlvClear();
+	mAttachment.TlvClear();
 }
 void RsGxsPostedGroupItem::clear()
 {

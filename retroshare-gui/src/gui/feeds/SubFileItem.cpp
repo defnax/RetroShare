@@ -709,7 +709,8 @@ bool SubFileItem::isPlayable(bool &startable)
 	/* Check buttons. Not good, but it works. */
 	bool visible = playButton->isVisibleTo(this);
 	startable = visible && playButton->isEnabled();
-
+	loadpicture();
+	
 	return visible;
 }
 
@@ -720,6 +721,13 @@ void SubFileItem::mediatype()
 	playButton->setToolTip(tr("Open File"));
 	playButton->setIcon(QIcon());
 }
+
+void SubFileItem::picturetype()
+{
+	/* check if the file is not a picture & hide it */
+	imageLabel->hide();
+}
+
 
 void SubFileItem::copyLink()
 {
@@ -732,5 +740,27 @@ void SubFileItem::copyLink()
 		QList<RetroShareLink> urls;
 		urls.push_back(link);
 		RSLinkClipboard::copyLinks(urls);
+	}
+}
+
+void SubFileItem::loadpicture()
+{
+	FileInfo info;
+	FileSearchFlags flags = RS_FILE_HINTS_DOWNLOAD | RS_FILE_HINTS_EXTRA | RS_FILE_HINTS_LOCAL | RS_FILE_HINTS_NETWORK_WIDE;
+
+
+	if (!rsFiles->FileDetails( mFileHash, flags, info))
+		return;
+
+	if (done()) {
+
+		/* open file with a suitable application */
+		QFileInfo qinfo;
+		qinfo.setFile(info.path.c_str());
+		if (qinfo.exists()) {
+			imageLabel->setPixmap(QPixmap(qinfo.absoluteFilePath()));
+		}else{
+			imageLabel->setPixmap(QPixmap(""));
+		}
 	}
 }

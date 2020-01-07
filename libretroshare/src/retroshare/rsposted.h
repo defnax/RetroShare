@@ -31,6 +31,7 @@
 #include "retroshare/rsgxsifacehelper.h"
 #include "retroshare/rsgxscommon.h"
 #include "serialiser/rsserializable.h"
+#include "serialiser/rstlvfileitem.h"
 
 /* The Main Interface Class - for information about your Posted */
 class RsPosted;
@@ -102,7 +103,25 @@ virtual bool createPost(uint32_t &token, RsPostedPost &post) = 0;
 
 virtual bool updateGroup(uint32_t &token, RsPostedGroup &group) = 0;
 
-    virtual bool groupShareKeys(const RsGxsGroupId& group,const std::set<RsPeerId>& peers) = 0 ;
+virtual bool groupShareKeys(const RsGxsGroupId& group,const std::set<RsPeerId>& peers) = 0 ;
+
+	/**
+	 * @brief Share extra file
+	 * Can be used to share extra file attached to a channel post
+	 * @jsonapi{development}
+	 * @param[in] path file path
+	 * @return false on error, true otherwise
+	 */
+	virtual bool ExtraFileHash(const std::string& path) = 0;
+
+	/**
+	 * @brief Remove extra file from shared files
+	 * @jsonapi{development}
+	 * @param[in] hash hash of the file to remove
+	 * @return false on error, true otherwise
+	 */
+	virtual bool ExtraFileRemove(const RsFileHash& hash) = 0;
+
 };
 
 
@@ -120,6 +139,9 @@ class RsPostedPost
         mHotScore = 0;
         mTopScore = 0;
         mNewScore = 0;
+
+		 mCount = 0; 
+		 mSize = 0;
 	}
 
 	bool calculateScores(rstime_t ref_time);
@@ -140,6 +162,10 @@ class RsPostedPost
 	double  mHotScore;
 	double  mTopScore;
 	double  mNewScore;
+
+	std::list<RsGxsFile> mFiles;
+	uint32_t mCount;   // auto calced.
+	uint64_t mSize;    // auto calced.
 	
 	RsGxsImage mImage;
 

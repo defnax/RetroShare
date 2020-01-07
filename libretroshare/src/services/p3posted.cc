@@ -25,12 +25,16 @@
 #include <math.h>
 #include <typeinfo>
 
+#include "retroshare/rsgxsflags.h"
+#include "retroshare/rsfiles.h"
 
 /****
  * #define POSTED_DEBUG 1
  ****/
 
 RsPosted *rsPosted = NULL;
+
+#define POSTED_STOREPERIOD	(3600 * 24 * 30)
 
 /********************************************************************************/
 /******************* Startup / Tick    ******************************************/
@@ -300,4 +304,19 @@ bool p3Posted::createPost(uint32_t &token, RsPostedPost &msg)
 	return true;
 }
 
+/********************************************************************************************/
+/********************************************************************************************/
+
+bool p3Posted::ExtraFileHash(const std::string& path)
+{
+	TransferRequestFlags flags = RS_FILE_REQ_ANONYMOUS_ROUTING;
+	return rsFiles->ExtraFileHash(path, POSTED_STOREPERIOD, flags);
+}
+
+
+bool p3Posted::ExtraFileRemove(const RsFileHash& hash)
+{ return rsFiles->ExtraFileRemove(hash); }
+
+
+/********************************************************************************************/
 /********************************************************************************************/
