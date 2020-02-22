@@ -142,7 +142,6 @@
 
 #define IMAGE_BWGRAPH           ":/icons/png/bandwidth.png"
 #define IMAGE_MESSENGER         ":/images/rsmessenger48.png"
-#define IMAGE_BLOCK         	":/images/blockdevice.png"
 #define IMAGE_COLOR         	":/images/highlight.png"
 #define IMAGE_GAMES             ":/images/kgames.png"
 #define IMAGE_PHOTO             ":/images/lphoto.png"
@@ -154,7 +153,6 @@
 #define IMAGE_MAXIMIZE          ":/images/window_fullscreen.png"
 
 #define IMAGE_PLUGINS           ":/images/extension_32.png"
-#define IMAGE_BLOGS             ":/images/kblogger.png"
 
 /*static*/ bool MainWindow::hiddenmode = false;
 
