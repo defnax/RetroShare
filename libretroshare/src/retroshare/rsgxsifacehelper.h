@@ -40,14 +40,19 @@
  * are necessary, so at this point this workaround seems acceptable.
  */
 
+#define DEBUG_GXSIFACEHELPER 1
+
 enum class TokenRequestType: uint8_t
 {
-    GROUP_INFO          = 0x01,
-    MSG_INFO            = 0x02,
-    MSG_RELATED_INFO    = 0x03,
-    GROUP_STATISTICS    = 0x04,
-    SERVICE_STATISTICS  = 0x05,
-    NO_KILL_TYPE        = 0x06,
+    UNDEFINED           = 0x00,
+    GROUP_DATA          = 0x01,
+    GROUP_META          = 0x02,
+    POSTS               = 0x03,
+    ALL_POSTS           = 0x04,
+    MSG_RELATED_INFO    = 0x05,
+    GROUP_STATISTICS    = 0x06,
+    SERVICE_STATISTICS  = 0x07,
+    NO_KILL_TYPE        = 0x08,
 };
 
 class RsGxsIfaceHelper
@@ -80,8 +85,7 @@ public:
      * @param groupIds the ids return for given request token
      * @return false if request token is invalid, check token status for error report
      */
-    bool getGroupList(const uint32_t &token,
-            std::list<RsGxsGroupId> &groupIds)
+    bool getGroupList(const uint32_t &token, std::list<RsGxsGroupId> &groupIds)
 	{
 		return mGxs.getGroupList(token, groupIds);
 	}
@@ -114,8 +118,7 @@ public:
      * @param groupInfo the ids returned for given request token
      * @return false if request token is invalid, check token status for error report
      */
-    bool getGroupSummary(const uint32_t &token,
-            std::list<RsGroupMetaData> &groupInfo)
+    bool getGroupSummary(const uint32_t &token, std::list<RsGroupMetaData> &groupInfo)
 	{
 		return mGxs.getGroupMeta(token, groupInfo);
 	}
@@ -125,8 +128,7 @@ public:
      * @param msgInfo the message metadata returned for given request token
      * @return false if request token is invalid, check token status for error report
      */
-    bool getMsgSummary(const uint32_t &token,
-            GxsMsgMetaMap &msgInfo)
+    bool getMsgSummary(const uint32_t &token, GxsMsgMetaMap &msgInfo)
 	{
 		return mGxs.getMsgMeta(token, msgInfo);
 	}
@@ -248,12 +250,23 @@ public:
 	/// @see RsTokenService::requestGroupInfo
 	bool requestGroupInfo( uint32_t& token, const RsTokReqOptions& opts, const std::list<RsGxsGroupId> &groupIds, bool high_priority_request = false )
 	{
-		cancelActiveRequestTokens(TokenRequestType::GROUP_INFO);
+        TokenRequestType token_request_type;
+
+        switch(opts.mReqType)
+        {
+        case GXS_REQUEST_TYPE_GROUP_DATA: token_request_type = TokenRequestType::GROUP_DATA; break;
+        case GXS_REQUEST_TYPE_GROUP_META: token_request_type = TokenRequestType::GROUP_META; break;
+        default:
+            RsErr() << __PRETTY_FUNCTION__ << "(EE) Unexpected request type " << opts.mReqType << "!!" << std::endl;
+            return false;
+        }
+
+		cancelActiveRequestTokens(token_request_type);
 
 		if( mTokenService.requestGroupInfo(token, 0, opts, groupIds))
         {
 			RS_STACK_MUTEX(mMtx);
-			mActiveTokens[token]=high_priority_request? (TokenRequestType::NO_KILL_TYPE) : (TokenRequestType::GROUP_INFO);
+			mActiveTokens[token]=high_priority_request? (TokenRequestType::NO_KILL_TYPE) : token_request_type;
             locked_dumpTokens();
             return true;
         }
@@ -264,12 +277,24 @@ public:
 	/// @see RsTokenService::requestGroupInfo
 	bool requestGroupInfo(uint32_t& token, const RsTokReqOptions& opts, bool high_priority_request = false)
 	{
-		cancelActiveRequestTokens(TokenRequestType::GROUP_INFO);
+        TokenRequestType token_request_type;
+
+        switch(opts.mReqType)
+        {
+        case GXS_REQUEST_TYPE_GROUP_DATA: token_request_type = TokenRequestType::GROUP_DATA; break;
+        case GXS_REQUEST_TYPE_GROUP_META: token_request_type = TokenRequestType::GROUP_META; break;
+        default:
+            RsErr() << __PRETTY_FUNCTION__ << "(EE) Unexpected request type " << opts.mReqType << "!!" << std::endl;
+            return false;
+        }
+
+		cancelActiveRequestTokens(token_request_type);
+
 
 		if(  mTokenService.requestGroupInfo(token, 0, opts))
         {
 			RS_STACK_MUTEX(mMtx);
-			mActiveTokens[token]=high_priority_request? (TokenRequestType::NO_KILL_TYPE) : (TokenRequestType::GROUP_INFO);
+			mActiveTokens[token]=high_priority_request? (TokenRequestType::NO_KILL_TYPE) : token_request_type;
             locked_dumpTokens();
             return true;
         }
@@ -278,13 +303,13 @@ public:
     }
 
 	/// @see RsTokenService::requestMsgInfo
-	bool requestMsgInfo( uint32_t& token,
-	                     const RsTokReqOptions& opts, const GxsMsgReq& msgIds )
+	bool requestMsgInfo( uint32_t& token, const RsTokReqOptions& opts, const GxsMsgReq& msgIds )
 	{
         if(mTokenService.requestMsgInfo(token, 0, opts, msgIds))
         {
 			RS_STACK_MUTEX(mMtx);
-			mActiveTokens[token]=TokenRequestType::MSG_INFO;
+
+			mActiveTokens[token]=  (msgIds.size()==1 && msgIds.begin()->second.size()==0) ?(TokenRequestType::ALL_POSTS):(TokenRequestType::POSTS);
 			locked_dumpTokens();
 			return true;
         }
@@ -298,7 +323,7 @@ public:
         if(mTokenService.requestMsgInfo(token, 0, opts, grpIds))
         {
 			RS_STACK_MUTEX(mMtx);
-			mActiveTokens[token]=TokenRequestType::MSG_INFO;
+			mActiveTokens[token]=TokenRequestType::ALL_POSTS;
 			locked_dumpTokens();
             return true;
         }
@@ -330,7 +355,7 @@ public:
 	{ return mTokenService.requestStatus(token); }
 
 	/// @see RsTokenService::requestServiceStatistic
-	void requestServiceStatistic(uint32_t& token)
+	bool requestServiceStatistic(uint32_t& token)
 	{
         mTokenService.requestServiceStatistic(token);
 
@@ -338,6 +363,7 @@ public:
 		mActiveTokens[token]=TokenRequestType::SERVICE_STATISTICS;
 
 		locked_dumpTokens();
+        return true;
     }
 
 	/// @see RsTokenService::requestGroupStatistic
@@ -459,15 +485,15 @@ private:
 
         uint32_t count[7] = {0};
 
-        std::cerr << "Service 0x0" << std::hex << service_id
+        std::cerr << "Service " << std::hex << service_id << std::dec
                   << " (" << rsServiceControl->getServiceName(RsServiceInfo::RsServiceInfoUIn16ToFullServiceId(service_id))
-                  << ") this=0x" << (void*)this << ") Active tokens (per type): " ;
+                  << ") this=" << std::hex << (void*)this << std::dec << ") Active tokens (per type): " ;
 
         for(auto& it: mActiveTokens)				// let's count how many token of each type we've got.
             ++count[static_cast<int>(it.second)];
 
         for(uint32_t i=0;i<7;++i)
-            std::cerr /* << i << ":" */ << count[i] << " ";
+            std::cerr << std::dec /* << i << ":" */ << count[i] << " ";
         std::cerr << std::endl;
     }
 };
