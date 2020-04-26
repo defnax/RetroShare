@@ -42,18 +42,14 @@ std::ostream& operator<<(std::ostream& o, const QModelIndex& i);// defined elsew
 const QString RsGxsForumModel::FilterString("filtered");
 
 RsGxsForumModel::RsGxsForumModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : QAbstractItemModel(parent), mUseChildTS(false),mFilteringEnabled(false),mTreeMode(TREE_MODE_TREE)
 {
     initEmptyHierarchy(mPosts);
-
-    mUseChildTS=false;
-    mFilteringEnabled=false;
-    mTreeMode = TREE_MODE_TREE;
 }
 
 void RsGxsForumModel::preMods()
 {
- 	emit layoutAboutToBeChanged();
+	//emit layoutAboutToBeChanged(); //Generate SIGSEGV when click on button move next/prev.
 
 	beginResetModel();
 }
