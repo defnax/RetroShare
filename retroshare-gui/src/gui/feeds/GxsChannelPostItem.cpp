@@ -62,9 +62,9 @@ GxsChannelPostItem::GxsChannelPostItem(FeedHolder *feedHolder, uint32_t feedId, 
 		v.push_back(messageId);
 
 	setMessageVersions(v) ;
-    setup();
+	setup();
 
-    // no call to loadGroup() here because we have it already.
+	// no call to loadGroup() here because we have it already.
 }
 
 GxsChannelPostItem::GxsChannelPostItem(FeedHolder *feedHolder, uint32_t feedId, const RsGxsGroupId& groupId, const RsGxsMessageId &messageId, bool isHome, bool autoUpdate,const std::set<RsGxsMessageId>& older_versions) :
@@ -82,9 +82,9 @@ GxsChannelPostItem::GxsChannelPostItem(FeedHolder *feedHolder, uint32_t feedId, 
 		v.push_back(messageId);
 
 	setMessageVersions(v) ;
-    setup();
+	setup();
 
-    loadGroup();
+	loadGroup();
 }
 
 // GxsChannelPostItem::GxsChannelPostItem(FeedHolder *feedHolder, uint32_t feedId, const RsGxsChannelPost& post, bool isHome, bool autoUpdate,const std::set<RsGxsMessageId>& older_versions) :
@@ -173,6 +173,7 @@ void GxsChannelPostItem::setup()
 
 	mInFill = false;
 	mCloseOnRead = false;
+	mLoaded = false;
 
 	/* clear ui */
 	ui->titleLabel->setText(tr("Loading..."));
