@@ -242,8 +242,9 @@ MessagesDialog::MessagesDialog(QWidget *parent)
 
     //ui.messageTreeWidget->installEventFilter(this);
 
-    // remove close button of the the first tab
-    ui.tabWidget->hideCloseButton(0);
+	// remove close button of the the first tab
+	ui.tabWidget->hideCloseButton(0);
+	ui.tabWidget->setHideTabBarWithOneTab(true);
 
     int S = QFontMetricsF(font()).height();
  QString help_str = tr(
@@ -461,7 +462,7 @@ void MessagesDialog::fillQuickView()
 
 	for (tag = tags.types.begin(); tag != tags.types.end(); ++tag) {
 		text = TagDefs::name(tag->first, tag->second.first);
-		QPixmap tagpixmap(18,18);
+		QPixmap tagpixmap(16,16);
 		tagpixmap.fill(QColor(tag->second.second));
 
 		item = new QListWidgetItem (text, ui.quickViewWidget);
