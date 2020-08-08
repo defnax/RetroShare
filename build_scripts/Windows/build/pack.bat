@@ -74,9 +74,9 @@ if "%QtMainVersion%"=="4" set QtMainVersion2=4
 if "%QtMainVersion%"=="5" set QtMainVersion1=5
 
 if "%RsBuildConfig%" NEQ "release" (
-	set Archive=%RsPackPath%\RetroShare-%RsVersion%-Windows-Portable-%RsDate%-%RsVersion.Extra%-Qt-%QtVersion%%RsType%%RsArchiveAdd%-%RsBuildConfig%.7z
+	set Archive=%RsPackPath%\RetroShare-%RsVersion%-Windows-Portable-%RsDate%-%RsVersion.Extra%-Qt-%QtVersion%-%GCCArchitecture%%RsType%%RsArchiveAdd%-%RsBuildConfig%.7z
 ) else (
-	set Archive=%RsPackPath%\RetroShare-%RsVersion%-Windows-Portable-%RsDate%-%RsVersion.Extra%-Qt-%QtVersion%%RsType%%RsArchiveAdd%.7z
+	set Archive=%RsPackPath%\RetroShare-%RsVersion%-Windows-Portable-%RsDate%-%RsVersion.Extra%-Qt-%QtVersion%-%GCCArchitecture%%RsType%%RsArchiveAdd%.7z
 )
 
 if exist "%Archive%" del /Q "%Archive%"
@@ -98,12 +98,13 @@ mkdir "%RsDeployPath%\qss"
 mkdir "%RsDeployPath%\stylesheets"
 mkdir "%RsDeployPath%\sounds"
 mkdir "%RsDeployPath%\translations"
+mkdir "%RsDeployPath%\license"
 
 copy nul "%RsDeployPath%\portable" %Quite%
 
 echo copy binaries
-copy "%RsBuildPath%\retroshare-gui\src\%RsBuildConfig%\RetroShare*.exe" "%RsDeployPath%" %Quite%
-copy "%RsBuildPath%\retroshare-nogui\src\%RsBuildConfig%\retroshare*-nogui.exe" "%RsDeployPath%" %Quite%
+copy "%RsBuildPath%\retroshare-gui\src\%RsBuildConfig%\retroshare*.exe" "%RsDeployPath%" %Quite%
+copy "%RsBuildPath%\retroshare-service\src\%RsBuildConfig%\retroshare*-service.exe" "%RsDeployPath%" %Quite%
 
 echo copy extensions
 for /D %%D in ("%RsBuildPath%\plugins\*") do (
@@ -148,13 +149,15 @@ rmdir /S /Q "%RsDeployPath%\stylesheets\__MACOSX__Bubble" %Quite%
 echo copy sounds
 xcopy /S "%SourcePath%\retroshare-gui\src\sounds" "%RsDeployPath%\sounds" %Quite%
 
+echo copy license
+xcopy /S "%SourcePath%\retroshare-gui\src\license" "%RsDeployPath%\license" %Quite%
+
 echo copy translation
 copy "%SourcePath%\retroshare-gui\src\translations\qt_tr.qm" "%RsDeployPath%\translations" %Quite%
 copy "%QtPath%\..\translations\qt_*.qm" "%RsDeployPath%\translations" %Quite%
 if "%QtMainVersion%"=="5" (
 	copy "%QtPath%\..\translations\qtbase_*.qm" "%RsDeployPath%\translations" %Quite%
 	copy "%QtPath%\..\translations\qtscript_*.qm" "%RsDeployPath%\translations" %Quite%
-	copy "%QtPath%\..\translations\qtquick1_*.qm" "%RsDeployPath%\translations" %Quite%
 	copy "%QtPath%\..\translations\qtmultimedia_*.qm" "%RsDeployPath%\translations" %Quite%
 	copy "%QtPath%\..\translations\qtxmlpatterns_*.qm" "%RsDeployPath%\translations" %Quite%
 )
@@ -163,7 +166,7 @@ echo copy bdboot.txt
 copy "%SourcePath%\libbitdht\src\bitdht\bdboot.txt" "%RsDeployPath%" %Quite%
 
 echo copy changelog.txt
-copy "%SourcePath%\retroshare-gui\src\changelog.txt" "%RsDeployPath%" %Quite%
+copy "%RsBuildPath%\changelog.txt" "%RsDeployPath%" %Quite%
 
 if exist "%SourcePath%\libresapi\src\webui" (
 	echo copy webui
