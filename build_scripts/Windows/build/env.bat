@@ -3,8 +3,10 @@ set ParamRelease=0
 set ParamDebug=0
 set ParamAutologin=0
 set ParamPlugins=0
+set ParamJsonApi=0
 set ParamTor=0
 set NonInteractive=0
+set CoreCount=%NUMBER_OF_PROCESSORS%
 
 :parameter_loop
 if "%~1" NEQ "" (
@@ -15,12 +17,16 @@ if "%~1" NEQ "" (
 			set ParamDebug=1
 		) else if "%%~a"=="autologin" (
 			set ParamAutologin=1
+		) else if "%%~a"=="jsonapi" (
+			set ParamJsonApi=1
 		) else if "%%~a"=="plugins" (
 			set ParamPlugins=1
 		) else if "%%~a"=="tor" (
 			set ParamTor=1
 		) else if "%%~a"=="non-interactive" (
 			set NonInteractive=1
+		) else if "%%~a"=="singlethread" (
+			set CoreCount=1
 		) else (
 			echo.
 			echo Unknown parameter %1
@@ -97,7 +103,11 @@ echo release^|debug      Build release or debug version
 echo.
 echo Optional parameter (need clean when changed)
 echo autologin          Build with autologin
+echo jsonapi            Build with jsonapi
 echo plugins            Build plugins
+echo.
+echo Optional parameter
+echo singlethread       Use only 1 thread for building
 echo.
 echo Parameter for pack
 echo tor                Pack tor version

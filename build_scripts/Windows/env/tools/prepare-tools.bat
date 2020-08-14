@@ -6,8 +6,6 @@ set CEchoUrl=https://github.com/lordmulder/cecho/releases/download/2015-10-10/ce
 set CEchoInstall=cecho.2015-10-10.zip
 set SevenZipUrl=https://sourceforge.net/projects/sevenzip/files/7-Zip/19.00/7z1900.msi/download
 set SevenZipInstall=7z1900.msi
-set JomUrl=http://download.qt.io/official_releases/jom/jom.zip
-set JomInstall=jom.zip
 set DependsUrl=http://www.dependencywalker.com/depends22_x86.zip
 set DependsInstall=depends22_x86.zip
 set UnixToolsUrl=http://unxutils.sourceforge.net/UnxUpdates.zip
@@ -22,6 +20,8 @@ set CMakeVersion=cmake-3.1.0-win32-x86
 set CMakeInstall=%CMakeVersion%.zip
 set CMakeUrl=http://www.cmake.org/files/v3.1/%CMakeInstall%
 set CMakeInstallPath=%EnvToolsPath%\cmake
+set TorProjectUrl=https://www.torproject.org
+set TorDownloadIndexUrl=%TorProjectUrl%/download/tor
 
 if not exist "%EnvToolsPath%\7z.exe" (
 	call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
@@ -52,22 +52,6 @@ if not exist "%EnvToolsPath%\cecho.exe" (
 	echo Unpack cecho
 	"%EnvSevenZipExe%" x -o"%EnvTempPath%" "%EnvDownloadPath%\%CEchoInstall%"
 	copy "%EnvTempPath%\cecho.exe" "%EnvToolsPath%"
-
-	call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
-)
-
-if not exist "%EnvToolsPath%\jom.exe" (
-	call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
-	mkdir "%EnvTempPath%"
-
-	%cecho% info "Download jom installation"
-
-	if not exist "%EnvDownloadPath%\%JomInstall%" call "%ToolsPath%\download-file.bat" %JomUrl% "%EnvDownloadPath%\%JomInstall%"
-	if not exist "%EnvDownloadPath%\%JomInstall%" %cecho% error "Cannot download jom installation" & goto error
-
-	%cecho% info "Unpack jom"
-	"%EnvSevenZipExe%" x -o"%EnvTempPath%" "%EnvDownloadPath%\%JomInstall%"
-	copy "%EnvTempPath%\jom.exe" "%EnvToolsPath%"
 
 	call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
 )
@@ -170,10 +154,33 @@ if not exist "%CMakeInstallPath%\bin\cmake.exe" (
 	call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
 )
 
+rem Tor
+rem Get download link and filename from download page
+mkdir "%EnvTempPath%"
+call "%ToolsPath%\download-file.bat" "%TorDownloadIndexUrl%" "%EnvTempPath%\index.html"
+if not exist "%EnvTempPath%\index.html" %cecho% error "Cannot download Tor installation" & goto error
+
+for /F "tokens=1,2 delims= " %%A in ('%EnvSedExe% -r -n -e"s/.*href=\"^(.*^)^(tor-win32.*\.zip^)\".*/\2 \1\2/p" "%EnvTempPath%\index.html"') do set TorInstall=%%A& set TorDownloadUrl=%TorProjectUrl%%%B
+call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
+if "%TorInstall%"=="" %cecho% error "Cannot download Tor installation" & goto error
+if "%TorDownloadUrl%"=="" %cecho% error "Cannot download Tor installation" & goto error
+
+if not exist "%EnvDownloadPath%\%TorInstall%" call "%ToolsPath%\remove-dir.bat" "%EnvTorPath%"
+if not exist "%EnvTorPath%\Tor\tor.exe" (
+	%cecho% info "Download Tor installation"
+
+	if not exist "%EnvDownloadPath%\%TorInstall%" call "%ToolsPath%\download-file.bat" "%TorDownloadUrl%" "%EnvDownloadPath%\%TorInstall%"
+	if not exist "%EnvDownloadPath%\%TorInstall%" %cecho% error "Cannot download Tor installation" & goto error
+
+	%cecho% info "Unpack Tor"
+	"%EnvSevenZipExe%" x -o"%EnvTorPath%" "%EnvDownloadPath%\%TorInstall%"
+)
+
 :exit
 endlocal
 exit /B 0
 
 :error
+call "%ToolsPath%\remove-dir.bat" "%EnvTempPath%"
 endlocal
 exit /B 1
