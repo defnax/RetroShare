@@ -687,10 +687,20 @@ void PostedListWidgetWithModel::processSettings(bool load)
 
 	if (load)
 	{
+        // state of ID Chooser combobox
+        RsGxsId gxs_id(Settings->value("IDChooser", QString::fromStdString(RsGxsId().toStdString())).toString().toStdString());
+
+        if(!gxs_id.isNull() && rsIdentity->isOwnId(gxs_id))
+            ui->idChooser->setChosenId(gxs_id);
 	}
 	else
 	{
-	}
+        // state of ID Chooser combobox
+        RsGxsId id;
+
+        if(ui->idChooser->getChosenId(id))
+            Settings->setValue("IDChooser", QString::fromStdString(id.toStdString()));
+    }
 
 	Settings->endGroup();
 }
@@ -824,7 +834,7 @@ void PostedListWidgetWithModel::insertBoardDetails(const RsPostedGroup& group)
 	ui->logoLabel->setPixmap(chanImage);
     ui->logoLabel->setFixedSize(QSize(ui->logoLabel->height()*chanImage.width()/(float)chanImage.height(),ui->logoLabel->height())); // make the logo have the same aspect ratio than the original image
 
-    //ui->submitPostButton->setEnabled(bool(group.mMeta.mSubscribeFlags & GXS_SERV::GROUP_SUBSCRIBE_PUBLISH));
+    ui->submitPostButton->setEnabled(IS_GROUP_SUBSCRIBED(group.mMeta.mSubscribeFlags));
 
 	ui->subscribeToolButton->setSubscribed(IS_GROUP_SUBSCRIBED(group.mMeta.mSubscribeFlags));
 	ui->subscribeToolButton->setEnabled(true);
