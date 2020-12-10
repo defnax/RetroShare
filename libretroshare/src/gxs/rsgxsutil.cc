@@ -207,16 +207,24 @@ RsGxsIntegrityCheck::RsGxsIntegrityCheck(
 
 void RsGxsIntegrityCheck::run()
 {
-    std::vector<RsGxsGroupId> grps_to_delete;
-    GxsMsgReq msgs_to_delete;
+	std::vector<RsGxsGroupId> grps_to_delete;
+	GxsMsgReq msgs_to_delete;
 
-    check(mGenExchangeClient->serviceType(),mGixs,mDs,mDeletedGrps,mDeletedMsgs);
+	check(mGenExchangeClient->serviceType(), mGixs, mDs
+#ifdef RS_DEEP_CHANNEL_INDEX
+	      , mGenExchangeClient, mSerializer
+#endif
+	      , mDeletedGrps, mDeletedMsgs);
 
 	RS_STACK_MUTEX(mIntegrityMutex);
 	mDone = true;
 }
 
-bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralDataService *mds, std::vector<RsGxsGroupId>& grpsToDel, GxsMsgReq& msgsToDel)
+bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralDataService *mds
+#ifdef RS_DEEP_CHANNEL_INDEX
+                                , RsGenExchange* mGenExchangeClient, RsSerialType& mSerializer
+#endif
+                                , std::vector<RsGxsGroupId>& grpsToDel, GxsMsgReq& msgsToDel)
 {
 #ifdef RS_DEEP_CHANNEL_INDEX
 	bool isGxsChannels = mGenExchangeClient->serviceType() == RS_SERVICE_GXS_TYPE_CHANNELS;
@@ -234,8 +242,7 @@ bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralD
 
     // compute hash and compare to stored value, if it fails then simply add it
 	// to list
-	for( std::map<RsGxsGroupId, RsNxsGrp*>::iterator git = grp.begin();
-	     git != grp.end(); ++git )
+    for( std::map<RsGxsGroupId, RsNxsGrp*>::iterator git = grp.begin(); git != grp.end(); ++git )
 	{
 		RsNxsGrp* grp = git->second;
 		RsFileHash currHash;
@@ -311,7 +318,8 @@ bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralD
 		}
 		else
 		{
-			grpsToDel.push_back(grp->grpId);
+            std::cerr << __PRETTY_FUNCTION__ <<" (EE) deleting group " << grp->grpId << " with wrong hash or null/corrupted meta data. meta=" << grp->metaData << std::endl;
+            grpsToDel.push_back(grp->grpId);
 #ifdef RS_DEEP_CHANNEL_INDEX
 			if(isGxsChannels)
 				DeepChannelsIndex::removeChannelFromIndex(grp->grpId);
@@ -320,8 +328,6 @@ bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralD
 
 		delete grp;
 	}
-
-    mds->removeGroups(grpsToDel);
 
     // now messages
     GxsMsgResult msgs;
@@ -378,9 +384,7 @@ bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralD
 
 			if(msg->metaData == NULL || currHash != msg->metaData->mHash)
 			{
-				std::cerr << __PRETTY_FUNCTION__ <<" (EE) deleting message data"
-				          << " with wrong hash or null meta data. meta="
-				          << (void*)msg->metaData << std::endl;
+                std::cerr << __PRETTY_FUNCTION__ <<" (EE) deleting message " << msg->msgId << " in group " << msg->grpId << " with wrong hash or null/corrupted meta data. meta=" << (void*)msg->metaData << std::endl;
 				msgsToDel[msg->grpId].insert(msg->msgId);
 #ifdef RS_DEEP_CHANNEL_INDEX
 				if(isGxsChannels)
@@ -450,8 +454,6 @@ bool RsGxsIntegrityCheck::check(uint16_t service_type, RsGixs *mgixs, RsGeneralD
 		    delete msg;
 	    }
     }
-
-    mds->removeMsgs(msgsToDel);
 
 	{
 #ifdef DEBUG_GXSUTIL
