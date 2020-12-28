@@ -2250,6 +2250,10 @@ GxsForumMsgItem QFrame#frame{
 	background-color: #19232D;
 }
 
+PostedItem QFrame#mainFrame{
+	background: #19232D;
+}
+
 WireGroupItem QFrame#wire_frame{
 	background: transparent;
 }
@@ -2272,4 +2276,12 @@ PulseTopLevel QFrame#frame, PulseViewGroup QFrame#frame, PulseReply QFrame#frame
 
 MainWindow QListWidget {
 	font-size: 12pt;
+}
+
+ChatLobbyWidget QTreeWidget#lobbyTreeWidget{
+		font-size: 10pt;
+}
+
+NewFriendList QTreeView#peerTreeWidget {
+		font-size: 12pt;
 }

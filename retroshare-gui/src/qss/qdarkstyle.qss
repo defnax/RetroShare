@@ -1385,6 +1385,10 @@ GxsForumMsgItem QFrame#frame{
 	background: #302F2F;
 }
 
+PostedItem QFrame#mainFrame{
+	background: #302F2F;
+}
+
 BoardPostDisplayWidget_compact QPushButton#shareButton
 {
 	background-color: transparent;
@@ -1493,4 +1497,12 @@ PulseTopLevel QFrame#frame, PulseViewGroup QFrame#frame, PulseReply QFrame#frame
 
 MainWindow QListWidget {
 	font-size: 12pt;
+}
+
+ChatLobbyWidget QTreeWidget#lobbyTreeWidget{
+		font-size: 10pt;
+}
+
+NewFriendList QTreeView#peerTreeWidget {
+		font-size: 12pt;
 }
