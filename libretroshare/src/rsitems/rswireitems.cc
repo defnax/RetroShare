@@ -95,3 +95,17 @@ void RsGxsWirePulseItem::serial_process(RsGenericSerializer::SerializeJob j,RsGe
 	pulse.mImage4.serial_process(j, ctx);
 }
 
+bool RsGxsWireGroupItem::fromWireGroup(RsWireGroup &group)
+{
+	clear();
+	meta = group.mMeta;
+
+	return true;
+}
+
+bool RsGxsWireGroupItem::toWireGroup(RsWireGroup &group)
+{
+	group.mMeta = meta;
+
+	return true;
+}

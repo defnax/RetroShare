@@ -47,6 +47,11 @@ public:
 
 	virtual void serial_process(RsGenericSerializer::SerializeJob j,RsGenericSerializer::SerializeContext& ctx);
 
+	// use conversion functions to transform:
+	bool fromWireGroup(RsWireGroup &group);
+	bool toWireGroup(RsWireGroup &group);
+
+
 	RsWireGroup group;
 };
 
