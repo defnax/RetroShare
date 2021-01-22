@@ -20,6 +20,7 @@
 
 #include <QBuffer>
 #include <QMessageBox>
+#include <QToolTip>
 
 #include "IdEditDialog.h"
 #include "ui_IdEditDialog.h"
@@ -100,6 +101,7 @@ IdEditDialog::~IdEditDialog() {}
 
 void IdEditDialog::changeAvatar()
 {
+#ifdef TODO
 	AvatarDialog dialog(this);
 
 	dialog.setAvatar(mAvatar);
@@ -109,6 +111,23 @@ void IdEditDialog::changeAvatar()
 
 		setAvatar(newAvatar);
 	}
+#endif
+    // For now we use a simpler method since AvatarDialog is not finished yet; we use the thumbnail viewer to allow the user to
+    // select a proper scale/crop of a given image to make his/her avatar.
+
+    QString image_filename ;
+
+    if(!misc::getOpenFileName(this,RshareSettings::LASTDIR_IMAGES,tr("Import image"), tr("Image files (*.jpg *.png);;All files (*)"),image_filename))
+        return;
+
+    QImage img(image_filename);
+
+    ui->avatarLabel->setPicture(QPixmap::fromImage(img));
+    ui->avatarLabel->setEnableZoom(true);
+    ui->avatarLabel->setToolTip(tr("Use the mouse to zoom and adjust the image for your avatar."));
+
+    // shows the tooltip for a while
+    QToolTip::showText( ui->avatarLabel->mapToGlobal( QPoint( 0, 0 ) ), ui->avatarLabel->toolTip() );
 }
 
 void IdEditDialog::setupNewId(bool pseudo,bool enable_anon)
@@ -598,6 +617,8 @@ void IdEditDialog::updateId()
 
     mEditGroup.mMeta.mGroupName = groupname.toUtf8().constData();
 
+    mAvatar = ui->avatarLabel->extractCroppedScaledPicture();
+
 	if (!mAvatar.isNull())
 	{
 		QByteArray ba;
@@ -611,8 +632,31 @@ void IdEditDialog::updateId()
 	else
 		mEditGroup.mImage.clear();
 
-	uint32_t dummyToken = 0;
-	rsIdentity->updateIdentity(mEditGroup);
+    RsGxsId keyId;
+    std::string gpg_password;
+
+    if(!mEditGroup.mPgpId.isNull())
+    {
+        std::string gpg_name = rsPeers->getGPGName(rsPeers->getGPGOwnId());
+        bool cancelled;
+
+        rsNotify->clearPgpPassphrase(); // just in case
+
+        if(!NotifyQt::getInstance()->askForPassword(tr("Profile password needed.").toStdString(),
+                                                    gpg_name + " (" + rsPeers->getOwnId().toStdString() + ")",
+                                                    false,
+                                                    gpg_password,cancelled))
+        {
+            QMessageBox::critical(NULL,tr("Identity creation failed"),tr("Cannot create an identity linked to your profile without your profile password."));
+            return;
+        }
+    }
+
+    if(!rsIdentity->updateIdentity(RsGxsId(mEditGroup.mMeta.mGroupId),mEditGroup.mMeta.mGroupName,mEditGroup.mImage,mEditGroup.mPgpId.isNull(),gpg_password))
+    {
+        QMessageBox::critical(NULL,tr("Identity update failed"),tr("Cannot update identity. Something went wrong. Check your profile password."));
+        return;
+    }
 
 	accept();
 }
