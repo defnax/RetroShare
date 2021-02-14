@@ -95,6 +95,7 @@ IdEditDialog::IdEditDialog(QWidget *parent) :
 	ui->pushButton_Tag->hide(); // unfinished
 	ui->plainTextEdit_Tag->hide();
 	ui->label_TagCheck->hide();
+	ui->frame_Tags->setHidden(true);
 }
 
 IdEditDialog::~IdEditDialog() {}
@@ -209,10 +210,10 @@ void IdEditDialog::setAvatar(const QPixmap &avatar)
 	mAvatar = avatar;
 
 	if (!mAvatar.isNull()) {
-		ui->avatarLabel->setPixmap(mAvatar);
-	} else {
+        ui->avatarLabel->setPicture(avatar);
+    } else {
 		// we need to use the default pixmap here, generated from the ID
-		ui->avatarLabel->setPixmap(GxsIdDetails::makeDefaultIcon(RsGxsId(mEditGroup.mMeta.mGroupId)));
+        ui->avatarLabel->setPicture(GxsIdDetails::makeDefaultIcon(RsGxsId(mEditGroup.mMeta.mGroupId)));
 	}
 }
 
@@ -263,6 +264,9 @@ void IdEditDialog::setupExistingId(const RsGxsGroupId& keyId)
 
 		}, this );
 	});
+
+    // force resize of dialog, to hide empty space from the hidden recogn tags area
+    adjustSize();
 }
 
 void IdEditDialog::enforceNoAnonIds()
@@ -547,18 +551,20 @@ void IdEditDialog::createId()
     params.nickname = groupname.toUtf8().constData();
 	params.isPgpLinked = (ui->radioButton_GpgId->isChecked());
 
-	if (!mAvatar.isNull())
-	{
-		QByteArray ba;
-		QBuffer buffer(&ba);
+    mAvatar = ui->avatarLabel->extractCroppedScaledPicture();
 
-		buffer.open(QIODevice::WriteOnly);
-		mAvatar.save(&buffer, "PNG"); // writes image into ba in PNG format
+    if (!mAvatar.isNull())
+    {
+        QByteArray ba;
+        QBuffer buffer(&ba);
 
-		params.mImage.copy((uint8_t *) ba.data(), ba.size());
-	}
-	else
-		params.mImage.clear();
+        buffer.open(QIODevice::WriteOnly);
+        mAvatar.save(&buffer, "PNG"); // writes image into ba in PNG format
+
+        params.mImage.copy((uint8_t *) ba.data(), ba.size());
+    }
+    else
+        params.mImage.clear();
 
     RsGxsId keyId;
     std::string gpg_password;
@@ -635,7 +641,7 @@ void IdEditDialog::updateId()
     RsGxsId keyId;
     std::string gpg_password;
 
-    if(!mEditGroup.mPgpId.isNull())
+    if(mEditGroup.mPgpLinked)
     {
         std::string gpg_name = rsPeers->getGPGName(rsPeers->getGPGOwnId());
         bool cancelled;
