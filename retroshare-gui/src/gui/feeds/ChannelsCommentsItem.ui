@@ -44,6 +44,12 @@
       <property name="topMargin">
        <number>9</number>
       </property>
+      <property name="horizontalSpacing">
+       <number>6</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>3</number>
+      </property>
       <item row="2" column="1">
        <layout class="QHBoxLayout" name="buttonHLayout">
         <property name="spacing">
@@ -254,13 +260,16 @@
           <number>3</number>
          </property>
          <property name="topMargin">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
           <number>9</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>3</number>
          </property>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_3">
@@ -312,7 +321,7 @@
             <string>Name</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
           </widget>
          </item>
@@ -391,7 +400,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>58</width>
-            <height>10</height>
+            <height>6</height>
            </size>
           </property>
          </spacer>
