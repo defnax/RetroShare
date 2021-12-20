@@ -340,5 +340,11 @@
         <file>icons/notification.png</file>
         <file>icons/wire.png</file>
         <file>icons/wire-circle.png</file>
+        <file>icons/groups/coworkers.png</file>
+        <file>icons/groups/family.png</file>
+        <file>icons/groups/favorites.png</file>
+        <file>icons/groups/friends.png</file>
+        <file>icons/groups/othercontacts.png</file>
+        <file>icons/groups/teamwork.png</file>
     </qresource>
 </RCC>
