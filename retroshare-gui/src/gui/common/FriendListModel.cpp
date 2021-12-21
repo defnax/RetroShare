@@ -42,14 +42,14 @@
 
 #define IS_MESSAGE_UNREAD(flags) (flags &  (RS_MSG_NEW | RS_MSG_UNREAD_BY_USER))
 
-#define IMAGE_COWORKERS        ":/icons/groups/coworkers.png"
-#define IMAGE_FRIENDS          ":/icons/groups/friends.png"
-#define IMAGE_FAMILY           ":/icons/groups/family.png"
-#define IMAGE_FAVORITES        ":/icons/groups/favorites.png"
-#define IMAGE_OTHERCONTACTS    ":/icons/groups/othercontacts.png"
+#define IMAGE_COWORKERS        ":/icons/groups/green.png"
+#define IMAGE_FRIENDS          ":/icons/groups/blue.png"
+#define IMAGE_FAMILY           ":/icons/groups/purple.png"
+#define IMAGE_FAVORITES        ":/icons/groups/yellow.png"
+#define IMAGE_OTHERCONTACTS    ":/icons/groups/pink.png"
+#define IMAGE_OTHERGROUPS      ":/icons/groups/red.png"
 #define IMAGE_STAR_ON          ":/images/star-on-16.png"
 #define IMAGE_STAR_OFF         ":/images/star-off-16.png"
-
 
 std::ostream& operator<<(std::ostream& o, const QModelIndex& i);// defined elsewhere
 
@@ -896,7 +896,7 @@ QVariant RsFriendListModel::decorationRole(const EntryIndex& entry,int col) cons
 			return QVariant(FilesDefs::getIconFromQtResourcePath(IMAGE_FAVORITES));
 		}
 
-		return QVariant(FilesDefs::getIconFromQtResourcePath(IMAGE_OTHERCONTACTS));
+		return QVariant(FilesDefs::getIconFromQtResourcePath(IMAGE_OTHERGROUPS));
    }
     case ENTRY_TYPE_PROFILE:
     {
