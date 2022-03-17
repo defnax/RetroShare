@@ -32,15 +32,14 @@
 #define IMAGE_FILTER ":/images/find.png"
 
 LineEditClear::LineEditClear(QWidget *parent)
-    : QLineEdit(parent)
+	: QLineEdit(parent)
 {
 	mActionGroup = NULL;
 	mFilterButton = NULL;
 
-	QFontMetrics fm(this->font());
 	mClearButton = new QToolButton(this);
-	mClearButton->setFixedSize(fm.height(), fm.height());
-	mClearButton->setIconSize(QSize(fm.height(), fm.height()));
+	mClearButton->setFixedSize(16, 16);
+	mClearButton->setIconSize(QSize(16, 16));
 	mClearButton->setCursor(Qt::ArrowCursor);
 	mClearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }"
 								"QToolButton { border-image: url(:/images/closenormal.png) }"
@@ -125,18 +124,15 @@ void LineEditClear::showFilterIcon()
 	}
 
 	mFilterButton = new QToolButton(this);
-	mFilterButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	mFilterButton->setFocusPolicy(Qt::NoFocus);
-	mFilterButton->setPopupMode(QToolButton::InstantPopup);
-	mFilterButton->setAutoFillBackground(true);
-	mFilterButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-	setFilterButtonIcon(QIcon());
+	mFilterButton->setFixedSize(16, 16);
+    mFilterButton->setIcon(FilesDefs::getIconFromQtResourcePath(IMAGE_FILTER));
+    //mFilterButton->setIconSize(filterPixmap.size());
 	mFilterButton->setCursor(Qt::ArrowCursor);
-	mFilterButton->setStyleSheet("QToolButton { background: transparent; border: none; margin: 0px; padding: 0px; }"
-	                             "QToolButton[popupMode=\"2\"] { padding-right: 10px; }"
-	                             "QToolButton::menu-indicator[popupMode=\"2\"] { subcontrol-origin: padding; subcontrol-position: bottom right; top: 5px; left: -3px; width: 7px; }"
-	                             );
+	mFilterButton->setStyleSheet("QToolButton { border: none; padding: 0px; }"
+								 "QToolButton[popupMode=\"2\"] { padding-right: 10px; }"
+								 "QToolButton::menu-indicator[popupMode=\"2\"] { subcontrol-origin: padding; subcontrol-position: bottom right; top: 5px; left: -3px; width: 7px; }");
 	mFilterButton->move(2, 2);
+	mFilterButton->setFocusPolicy(Qt::NoFocus);
 
 	reposButtons();
 }
@@ -159,6 +155,9 @@ void LineEditClear::addFilter(const QIcon &icon, const QString &text, int id, co
 	showFilterIcon();
 
 	if (mActionGroup == NULL) {
+		mFilterButton->setFixedSize(26, 16);
+		mFilterButton->setPopupMode(QToolButton::InstantPopup);
+
 		mActionGroup = new QActionGroup(this);
 		mActionGroup->setExclusive(true);
 
@@ -223,19 +222,10 @@ void LineEditClear::activateAction(QAction *action)
 		setPlaceholderText(*description);
 	}
 
-	setFilterButtonIcon(action->icon());
-}
+	QIcon icon = action->icon();
+	if (icon.isNull()) {
+        icon = FilesDefs::getIconFromQtResourcePath(IMAGE_FILTER);
+	}
 
-void LineEditClear::setFilterButtonIcon(const QIcon &icon)
-{
-	if (icon.isNull())
-		mFilterButton->setIcon(FilesDefs::getIconFromQtResourcePath(IMAGE_FILTER));
-	else
-		mFilterButton->setIcon(icon);
-
-	ensurePolished();
-	QFontMetrics fm(this->font());
-	QSize size(fm.width("___"), fm.height());
-	mFilterButton->setFixedSize(size);
-	mFilterButton->setIconSize(size);
+	mFilterButton->setIcon(icon);
 }

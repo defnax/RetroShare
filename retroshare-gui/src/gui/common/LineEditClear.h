@@ -61,7 +61,6 @@ protected:
 #endif
 	void reposButtons();
 	void activateAction(QAction *action);
-	void setFilterButtonIcon(const QIcon &icon);
 
 private slots:
 	void updateClearButton(const QString &text);
