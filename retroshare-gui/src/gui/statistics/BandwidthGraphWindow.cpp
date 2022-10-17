@@ -53,8 +53,8 @@
 /* Images used in the graph style drop-down */
 #define IMG_AREA_GRAPH    ":/images/16x16/graph-area.png"
 #define IMG_LINE_GRAPH    ":/images/16x16/graph-line.png"
-#define IMG_SETTINGS      ":/icons/system_128.png"
-#define IMG_CLEANUP       ":/images/reset.png"
+#define IMG_SETTINGS      ":/icons/png/settings.png"
+#define IMG_CLEANUP       ":/icons/png/history-clock-blue.png"
 #define IMG_SEND          ":/images/go-up.png"
 #define IMG_RECEIVE       ":/images/go-down.png"
 #define IMG_GRAPH_DARK    ":/images/graph-line.png"
@@ -82,6 +82,7 @@ BandwidthGraph::BandwidthGraph(QWidget *parent, Qt::WindowFlags flags)
   /* Hide Bandwidth Graph Settings frame */
   showSettingsFrame(false);
   /* Load the previously saved settings */
+  loadSettings();
 
    /* Turn off opacity group on unsupported platforms */
  #if defined(Q_OS_WIN)
@@ -110,8 +111,6 @@ BandwidthGraph::BandwidthGraph(QWidget *parent, Qt::WindowFlags flags)
 
    ui.frmGraph->setToolTip("Use Ctrl+mouse wheel to change line width, Shift+wheel to time-filter the curve.");
    ui.frmGraph->setDirection(BWGraphSource::DIRECTION_UP | BWGraphSource::DIRECTION_DOWN);
-
-  loadSettings();
 
    connect(ui.btnToggleSettings,SIGNAL(toggled(bool)),this,SLOT(showSettingsFrame(bool)));
    connect(ui.btnReset, SIGNAL(clicked()), this, SLOT(reset()));
@@ -171,6 +170,15 @@ BandwidthGraph::loadSettings()
       ui.frmGraph->resetFlags(RSGraphWidget::RSGRAPH_FLAGS_DARK_STYLE);
   }
 
+  /* Set whether the window appears on top. */
+  ui.chkAlwaysOnTop->setChecked(getSetting(SETTING_ALWAYS_ON_TOP, DEFAULT_ALWAYS_ON_TOP).toBool());
+
+  if (ui.chkAlwaysOnTop->isChecked()) {
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+  } else {
+    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+  }
+
   /* Download & Upload */
   int defaultdirection = getSetting(SETTING_DIRECTION, DEFAULT_DIRECTION).toInt();
 
@@ -210,6 +218,13 @@ void BandwidthGraph::saveSettings()
 
     /* Save the Always On Top setting */
     saveSetting(SETTING_ALWAYS_ON_TOP, ui.chkAlwaysOnTop->isChecked());
+    if (ui.chkAlwaysOnTop->isChecked()) {
+      setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+    } else {
+      setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+    }
+
+    setOpacity(ui.sldrOpacity->value());
 
     /* Save the line filter values */
     saveSetting(SETTING_DIRECTION, ui.frmGraph->direction());
@@ -218,16 +233,6 @@ void BandwidthGraph::saveSettings()
     // ui.frmGraph->setShowEntry(0,ui.chkReceiveRate->isChecked()) ;
     // ui.frmGraph->setShowEntry(1,ui.chkSendRate->isChecked()) ;
     // ui.frmGraph->resetFlags(RSGraphWidget::RSGRAPH_FLAGS_PAINT_STYLE_PLAIN);
-
-    // if(ui.btnGraphColor->isChecked()==0)
-    //     ui.frmGraph->resetFlags(RSGraphWidget::RSGRAPH_FLAGS_DARK_STYLE);
-    // else
-    //     ui.frmGraph->setFlags(RSGraphWidget::RSGRAPH_FLAGS_DARK_STYLE);
-
-    //  if(ui.cmbDownUp->currentIndex()==0)
-    //      ui.frmGraph->setDirection(BWGraphSource::DIRECTION_UP) ;
-    //  else
-    //      ui.frmGraph->setDirection(BWGraphSource::DIRECTION_DOWN) ;
 
     /* A change in window flags causes the window to disappear, so make sure
    * it's still visible. */
