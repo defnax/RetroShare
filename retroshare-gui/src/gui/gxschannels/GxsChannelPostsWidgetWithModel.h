@@ -138,6 +138,8 @@ protected:
 
 	/* GxsMessageFrameWidget */
     virtual void setAllMessagesReadDo(bool read) override;
+    virtual void resizeEvent(QResizeEvent *e) override;
+    virtual void keyPressEvent(QKeyEvent *e) override;
 
 private slots:
 	void showPostDetails();
@@ -154,7 +156,7 @@ private slots:
 	void editPost();
 	void postContextMenu(const QPoint&);
 	void copyMessageLink();
-	void updateZoomFactor(bool zoom_or_unzoom);
+    void onUpdateZoomFactor(bool zoom_or_unzoom);
     void switchView();
     void switchOnlyUnread(bool b);
     void markMessageUnread();
@@ -165,10 +167,12 @@ public slots:
  	void sortColumnPostFiles(int col,Qt::SortOrder so);
     void updateCommentsCount(int n);
     void showChannelFilesContextMenu(QPoint p);
+    void showChannelPostFilesContextMenu(QPoint p);
     void copyChannelFilesLink();
 
 private:
-	void processSettings(bool load);
+    void updateZoomFactor(int what_to_do);	// -1=unzoom, 0=nothing, 1=zoom
+    void processSettings(bool load);
     RsGxsMessageId getCurrentItemId() const;
     void selectItem(const RsGxsMessageId& msg_id);
 

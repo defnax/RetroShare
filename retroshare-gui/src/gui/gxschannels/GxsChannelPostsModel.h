@@ -105,6 +105,7 @@ public:
 
 	QModelIndex root() const{ return createIndex(0,0,(void*)NULL) ;}
 	QModelIndex getIndexOfMessage(const RsGxsMessageId& mid) const;
+    int columnCount(int row) const; // columns in the row of this particular index.
 
 	std::vector<std::pair<time_t,RsGxsMessageId> > getPostVersions(const RsGxsMessageId& mid) const;
 
@@ -115,7 +116,7 @@ public:
 	void updateChannel(const RsGxsGroupId& channel_group_id);
     const RsGxsGroupId& currentGroupId() const;
 
-    void triggerViewUpdate();
+    void triggerViewUpdate(bool data_changed,bool layout_changed);
 
     // sets the number of columns. Returns 0 if nothing changes.
     bool setNumColumns(int n);

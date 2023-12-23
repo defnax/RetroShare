@@ -119,6 +119,9 @@ GxsGroupFrameDialog::GxsGroupFrameDialog(RsGxsIfaceHelper *ifaceImpl,const QStri
 	sizes << 300 << width(); // Qt calculates the right sizes
 	ui->splitter->setSizes(sizes);
 
+	// load settings
+	processSettings(true);
+
 #ifndef UNFINISHED
 	ui->todoPushButton->hide();
 #endif
@@ -463,7 +466,9 @@ void GxsGroupFrameDialog::groupTreeCustomPopupMenu(QPoint point)
 			uint32_t current_store_time = checkDelay(mInterface->getStoragePeriod(mGroupId))/86400 ;
 			uint32_t current_sync_time  = checkDelay(mInterface->getSyncPeriod(mGroupId))/86400 ;
 
+#ifdef DEBUG_GROUPFRAMEDIALOG
 			std::cerr << "Got sync=" << current_sync_time << ". store=" << current_store_time << std::endl;
+#endif
 			QAction *actnn = NULL;
 
 			QMenu *ctxMenu2 = contextMnu.addMenu(tr("Synchronise posts of last...")) ;
@@ -1102,7 +1107,12 @@ void GxsGroupFrameDialog::updateGroupSummary()
 			 * Qt::QueuedConnection is important!
 			 */
 
-			insertGroupsData(*groupInfo);
+            // Here we save the focus, and restore it afterwards: there's no need to grab the focus here and
+            // if we do, it may harm the navitation in forums, channels, boards, etc.
+
+            auto w = QApplication::focusWidget();
+
+            insertGroupsData(*groupInfo);
 			updateSearchResults();
 
 			mStateHelper->setLoading(TOKEN_TYPE_GROUP_SUMMARY, false);
@@ -1129,7 +1139,12 @@ void GxsGroupFrameDialog::updateGroupSummary()
 
             delete groupInfo;
 
-		}, this );
+            // Restore the focus.
+
+            if(w)
+                w->setFocus();
+
+        }, this );
 	});
 }
 
@@ -1162,16 +1177,16 @@ void GxsGroupFrameDialog::updateGroupStatisticsReal(const RsGxsGroupId &groupId)
 			 * Qt::QueuedConnection is important!
 			 */
 
-			QTreeWidgetItem *item = ui->groupTreeWidget->getItemFromId(QString::fromStdString(stats.mGrpId.toStdString()));
-			if (!item)
-				return;
+            QTreeWidgetItem *item = ui->groupTreeWidget->getItemFromId(QString::fromStdString(stats.mGrpId.toStdString()));
 
-			ui->groupTreeWidget->setUnreadCount(item, mCountChildMsgs ? (stats.mNumThreadMsgsUnread + stats.mNumChildMsgsUnread) : stats.mNumThreadMsgsUnread);
+            if (item)
+                ui->groupTreeWidget->setUnreadCount(item, mCountChildMsgs ? (stats.mNumThreadMsgsUnread + stats.mNumChildMsgsUnread) : stats.mNumThreadMsgsUnread);
+
             mCachedGroupStats[groupId] = stats;
 
 			getUserNotify()->updateIcon();
 
-		}, this );
+        }, this );
 	});
 }
 

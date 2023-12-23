@@ -37,6 +37,7 @@
 #include "gui/advsearch/advancedsearchdialog.h"
 #include "gui/common/RSTreeWidgetItem.h"
 #include "util/QtVersion.h"
+#include "util/qtthreadsutils.h"
 
 #include <retroshare/rsfiles.h>
 #include <retroshare/rsturtle.h>
@@ -84,6 +85,18 @@ const int SearchDialog::FILETYPE_IDX_VIDEO = 7;
 const int SearchDialog::FILETYPE_IDX_DIRECTORY = 8;
 QMap<int, QString> * SearchDialog::FileTypeExtensionMap = new QMap<int, QString>();
 bool SearchDialog::initialised = false;
+
+struct SearchDialog::FileDetail
+{
+public:
+    RsPeerId id;
+    std::string name;
+    RsFileHash hash;
+    std::string path;
+    uint64_t size;
+    uint32_t mtime;
+    uint32_t rank;
+};
 
 /** Constructor */
 SearchDialog::SearchDialog(QWidget *parent)
@@ -217,6 +230,15 @@ SearchDialog::SearchDialog(QWidget *parent)
 
     checkText(ui.lineEdit->text());
 
+    // add an event handler to get search results (previously available through notifyQt)
+
+    mEventHandlerId = 0;
+
+    rsEvents->registerEventsHandler( [this](std::shared_ptr<const RsEvent> event)
+    {
+        RsQThreadUtils::postToObject([=](){ handleEvent_main_thread(event); }, this );
+    }, mEventHandlerId, RsEventType::FILE_TRANSFER );
+
 }
 
 SearchDialog::~SearchDialog()
@@ -235,6 +257,31 @@ SearchDialog::~SearchDialog()
 
     ui.searchResultWidget->setItemDelegateForColumn(SR_SIZE_COL, nullptr);
     ui.searchResultWidget->setItemDelegateForColumn(SR_AGE_COL, nullptr);
+
+    rsEvents->unregisterEventsHandler(mEventHandlerId);
+}
+
+void SearchDialog::handleEvent_main_thread(std::shared_ptr<const RsEvent> event)
+{
+    if(event->mType != RsEventType::FILE_TRANSFER)
+        return;
+
+    auto fe = dynamic_cast<const RsFileTransferEvent*>(event.get());
+
+    if(!fe || fe->mFileTransferEventCode!=RsFileTransferEventCode::NEW_DISTANT_SEARCH_RESULTS)
+        return;
+
+    for(uint32_t i=0;i<fe->mResults.size();++i)
+    {
+        FileDetail f;
+        f.hash = fe->mResults[i].fHash;
+        f.name = fe->mResults[i].fName;
+        f.size = fe->mResults[i].fSize;
+        f.mtime  = 0;	// zero what's not available, otherwise we'll get some random values displayed.
+        f.rank = 0;
+
+        updateFiles(fe->mRequestId,f);
+    }
 }
 
 void SearchDialog::processSettings(bool bLoad)
@@ -933,7 +980,7 @@ void SearchDialog::searchKeywords(const QString& keywords)
 	}
 }
 
-void SearchDialog::updateFiles(qulonglong search_id,FileDetail file)
+void SearchDialog::updateFiles(qulonglong search_id,const FileDetail& file)
 {
 	searchResultsQueue.push_back(std::pair<qulonglong,FileDetail>(search_id,file)) ;
 
@@ -961,7 +1008,7 @@ void SearchDialog::processResultQueue()
 	while(!searchResultsQueue.empty() && nb_treated_elements++ < 250)
 	{
 		qulonglong search_id = searchResultsQueue.back().first ;
-		FileDetail& file = searchResultsQueue.back().second ;
+        const FileDetail& file = searchResultsQueue.back().second ;
 
 #ifdef DEBUG
 		std::cout << "Updating file detail:" << std::endl ;
@@ -1287,8 +1334,8 @@ void SearchDialog::insertFile(qulonglong searchId, const FileDetail& file, int s
 
 		item->setText(SR_SIZE_COL, QString::number(file.size));
 		item->setData(SR_SIZE_COL, ROLE_SORT, (qulonglong) file.size);
-		item->setText(SR_AGE_COL, QString::number(file.age));
-		item->setData(SR_AGE_COL, ROLE_SORT, file.age);
+        item->setText(SR_AGE_COL, QString::number(file.mtime));
+        item->setData(SR_AGE_COL, ROLE_SORT, file.mtime);
 		item->setTextAlignment( SR_SIZE_COL, Qt::AlignRight );
 		int friendSource = 0;
 		int anonymousSource = 0;
@@ -1363,21 +1410,21 @@ void SearchDialog::resultsToTree(const QString& txt,qulonglong searchId, const s
 
 	std::list<DirDetails>::const_iterator it;
 	for(it = results.begin(); it != results.end(); ++it)
-		if (it->type == DIR_TYPE_FILE) {
+        if (it->type == DIR_TYPE_FILE)
+        {
 			FileDetail fd;
 			fd.id	= it->id;
 			fd.name = it->name;
 			fd.hash = it->hash;
 			fd.path = it->path;
             fd.size = it->size;
-			fd.age 	= it->mtime;
+            fd.mtime= it->mtime;
 			fd.rank = 0;
 
 			insertFile(searchId,fd, FRIEND_SEARCH);
-		} else if (it->type == DIR_TYPE_DIR) {
-//			insertDirectory(txt, searchId, *it, NULL);
+        }
+        else if (it->type == DIR_TYPE_DIR)
 			insertDirectory(txt, searchId, *it);
-		}
 
 	ui.searchResultWidget->setSortingEnabled(true);
 }

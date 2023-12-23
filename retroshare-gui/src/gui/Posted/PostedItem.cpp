@@ -74,7 +74,7 @@ BasePostedItem::BasePostedItem( FeedHolder *feedHolder, uint32_t feedId
 
 BasePostedItem::~BasePostedItem()
 {
-	auto timeout = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+    auto timeout = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
 	while( (mIsLoadingGroup || mIsLoadingMessage || mIsLoadingComment)
 	       && std::chrono::steady_clock::now() < timeout)
 	{
@@ -282,16 +282,12 @@ void BasePostedItem::readToggled(bool checked)
     if (mInFill) {
         return;
     }
+    setReadStatus(false, checked);
 
     RsThread::async([this,checked]()
     {
         RsGxsGrpMsgIdPair msgPair = std::make_pair(groupId(), messageId());
         rsPosted->setPostReadStatus(msgPair, !checked);
-
-        RsQThreadUtils::postToObject( [checked,this]()
-        {
-            setReadStatus(false, checked);
-        }, this );
     });
 }
 

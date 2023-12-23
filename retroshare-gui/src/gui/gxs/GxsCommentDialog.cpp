@@ -29,6 +29,8 @@
 #include <QMessageBox>
 #include <QDateTime>
 
+//#define DEBUG_COMMENT_DIALOG 1
+
 /** Constructor */
 GxsCommentDialog::GxsCommentDialog(QWidget *parent, const RsGxsId &default_author, RsGxsCommentService *comment_service)
 	: QWidget(parent), ui(new Ui::GxsCommentDialog)
@@ -95,8 +97,11 @@ void GxsCommentDialog::commentClear()
 }
 void GxsCommentDialog::commentLoad(const RsGxsGroupId &grpId, const std::set<RsGxsMessageId>& msg_versions,const RsGxsMessageId& most_recent_msgId,bool use_cache)
 {
-	std::cerr << "GxsCommentDialog::commentLoad(" << grpId << ", most recent msg version: " << most_recent_msgId << ")";
-	std::cerr << std::endl;
+#ifdef DEBUG_COMMENT_DIALOG
+    std::cerr << "GxsCommentDialog::commentLoad(" << grpId << ", most recent msg version: " << most_recent_msgId << ")" << std::endl;
+    for(const auto& mid:msg_versions)
+        std::cerr << "  msg version: " << mid << std::endl;
+#endif
 
 	mGrpId = grpId;
 	mMostRecentMsgId = most_recent_msgId;
@@ -126,15 +131,19 @@ void GxsCommentDialog::idChooserReady()
 
 void GxsCommentDialog::voterSelectionChanged( int index )
 {
+#ifdef DEBUG_COMMENT_DIALOG
 	std::cerr << "GxsCommentDialog::voterSelectionChanged(" << index << ")";
 	std::cerr << std::endl;
+#endif
 
 	RsGxsId voterId; 
 	switch (ui->idChooser->getChosenId(voterId)) {
 		case GxsIdChooser::KnowId:
 		case GxsIdChooser::UnKnowId:
-		std::cerr << "GxsCommentDialog::voterSelectionChanged() => " << voterId;
+#ifdef DEBUG_COMMENT_DIALOG
+        std::cerr << "GxsCommentDialog::voterSelectionChanged() => " << voterId;
 		std::cerr << std::endl;
+#endif
 		ui->treeWidget->setVoteId(voterId);
 
 		break;
@@ -155,8 +164,10 @@ void GxsCommentDialog::setCommentHeader(QWidget *header)
 		return;
 	}
 
-	std::cerr << "GxsCommentDialog::setCommentHeader() Adding header to ui,postFrame";
+#ifdef DEBUG_COMMENT_DIALOG
+    std::cerr << "GxsCommentDialog::setCommentHeader() Adding header to ui,postFrame";
 	std::cerr << std::endl;
+#endif
 
 	//header->setParent(ui->postFrame);
 	//ui->postFrame->setVisible(true);
