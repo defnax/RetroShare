@@ -89,6 +89,8 @@ private:
 	RSImageBlockWidget *mImageBlockWidget;
 	bool mLinkClickActive;
 	RsSyntaxHighlighter *highlighter;
+	QColor linkColor;
+
 	QList<QAction*> mContextMenuActions;
 #ifdef RSTEXTBROWSER_CHECKIMAGE_DEBUG
 	QRect mCursorRectStart;

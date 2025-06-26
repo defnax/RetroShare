@@ -23,6 +23,7 @@
 #include "RSImageBlockWidget.h"
 #include "gui/common/FilesDefs.h"
 #include "util/imageutil.h"
+#include "gui/settings/rsharesettings.h"
 
 #include <retroshare/rsinit.h> //To get RsAccounts
 
@@ -49,6 +50,10 @@ RSTextBrowser::RSTextBrowser(QWidget *parent) :
 	mLinkClickActive = true;
 
 	highlighter = new RsSyntaxHighlighter(this);
+
+	linkColor = Settings->getLinkColor();
+	QString sheet = QString::fromLatin1("a { text-decoration: underline; color: %1 }").arg(linkColor.name());
+	document()->setDefaultStyleSheet(sheet);
 
 	connect(this, SIGNAL(anchorClicked(QUrl)), this, SLOT(linkClicked(QUrl)));
 }
