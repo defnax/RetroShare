@@ -51,9 +51,7 @@ RSTextBrowser::RSTextBrowser(QWidget *parent) :
 
 	highlighter = new RsSyntaxHighlighter(this);
 
-	linkColor = Settings->getLinkColor();
-	QString sheet = QString::fromLatin1("a { text-decoration: underline; color: %1 }").arg(linkColor.name());
-	document()->setDefaultStyleSheet(sheet);
+	updateLinkColor();
 
 	connect(this, SIGNAL(anchorClicked(QUrl)), this, SLOT(linkClicked(QUrl)));
 }
@@ -363,4 +361,19 @@ void RSTextBrowser::copyImage()
 	QPoint point = action->data().toPoint();
 	QTextCursor cursor = cursorForPosition(point);
 	ImageUtil::copyImage(window(), cursor);
+}
+
+void RSTextBrowser::showEvent(QShowEvent *event)
+{
+	if (!event->spontaneous()) {
+		updateLinkColor();
+	}
+}
+
+void RSTextBrowser::updateLinkColor()
+{
+	linkColor = Settings->getLinkColor();
+	QString sheet = QString::fromLatin1("a { text-decoration: underline; color: %1 }").arg(linkColor.name());
+	document()->setDefaultStyleSheet(sheet);
+
 }

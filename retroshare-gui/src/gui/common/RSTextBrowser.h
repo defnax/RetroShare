@@ -60,6 +60,8 @@ public:
 
 	QMenu *createStandardContextMenuFromPoint(const QPoint &widgetPos);
 
+	virtual void showEvent(QShowEvent *) ;
+
 Q_SIGNALS:
 	void calculateContextMenuActions();
 
@@ -74,6 +76,7 @@ private slots:
 	void viewSource();
 	void saveImage();
 	void copyImage();
+	void updateLinkColor();
 
 protected:
 	void paintEvent(QPaintEvent *event);
