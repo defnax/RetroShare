@@ -77,7 +77,6 @@
             <property name="font">
              <font>
               <pointsize>12</pointsize>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -93,7 +92,6 @@
            <widget class="QToolButton" name="newthreadButton">
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -135,7 +133,6 @@
             <property name="font">
              <font>
               <pointsize>12</pointsize>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -391,7 +388,7 @@
          <item row="0" column="7">
           <widget class="QLabel" name="time_label">
            <property name="text">
-            <string notr="true"/>
+            <string>Date:</string>
            </property>
           </widget>
          </item>
@@ -650,8 +647,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../images.qrc"/>
   <include location="../icons.qrc"/>
+  <include location="../images.qrc"/>
  </resources>
  <connections/>
 </ui>
