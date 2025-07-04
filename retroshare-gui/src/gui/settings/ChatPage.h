@@ -57,6 +57,7 @@ class ChatPage : public ConfigPage
     void on_cbSearch_WithoutLimit_toggled(bool);
     void on_btSearch_FoundColor_clicked();
     void on_linkColorButton_clicked();
+    void on_resetButton_clicked();
 
     void distantChatComboBoxChanged(int);
   
@@ -88,6 +89,7 @@ class ChatPage : public ConfigPage
 
 	QRgb rgbChatSearchFoundColor;
 	QRgb rgbLinkColor;
+	QRgb defaultColor;
 
       /** Qt Designer generated object */
       Ui::ChatPage ui;

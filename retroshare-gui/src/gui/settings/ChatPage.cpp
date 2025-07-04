@@ -714,6 +714,16 @@ void ChatPage::on_linkColorButton_clicked()
 	}
 }
 
+void ChatPage::on_resetButton_clicked()
+{
+	QRgb color  = QString::number(QColor(3, 155, 198).rgba()).toUInt();
+	defaultColor = color;
+	QPixmap pix(24, 24);
+	pix.fill(color);
+	ui.linkColorButton->setIcon(pix);
+	Settings->setLinkColor(defaultColor);
+}
+
 void ChatPage::distantChatComboBoxChanged(int i)
 {
 	switch(i)

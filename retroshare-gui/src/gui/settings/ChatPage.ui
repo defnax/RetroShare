@@ -511,11 +511,34 @@
               </item>
               <item>
                <widget class="QPushButton" name="linkColorButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
                 <property name="toolTip">
                  <string>Set link color</string>
                 </property>
                 <property name="text">
                  <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="resetButton">
+                <property name="toolTip">
+                 <string>Reset to default color</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../icons.qrc">
+                  <normaloff>:/icons/textedit/undo.png</normaloff>:/icons/textedit/undo.png</iconset>
                 </property>
                </widget>
               </item>
@@ -1418,6 +1441,8 @@
    <header>gui/common/RSComboBox.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
