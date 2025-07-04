@@ -144,7 +144,6 @@ void ChatPage::updateChatSearchParams()
 	Settings->setChatSearchSearchWithoutLimit(ui.cbSearch_WithoutLimit->isChecked());
 	Settings->setChatSearchMaxSearchLimitColor(ui.sbSearch_MaxLimitColor->value());
 	Settings->setChatSearchFoundColor(rgbChatSearchFoundColor);
-	Settings->setLinkColor(rgbLinkColor);
 }
 
 void ChatPage::updateDefaultLobbyIdentity()
@@ -436,11 +435,6 @@ ChatPage::load()
     pix.fill(rgbChatSearchFoundColor);
     ui.btSearch_FoundColor->setIcon(pix);
 
-    rgbLinkColor=Settings->getLinkColor();
-    QPixmap colorpix(24, 24);
-    colorpix.fill(rgbLinkColor);
-    ui.linkColorButton->setIcon(colorpix);
-
     whileBlocking(ui.publicChatLoadCount)->setValue(Settings->getPublicChatHistoryCount());
     whileBlocking(ui.privateChatLoadCount)->setValue(Settings->getPrivateChatHistoryCount());
     whileBlocking(ui.lobbyChatLoadCount)->setValue(Settings->getLobbyChatHistoryCount());
@@ -699,29 +693,6 @@ void ChatPage::on_btSearch_FoundColor_clicked()
 		pix.fill(color);
 		ui.btSearch_FoundColor->setIcon(pix);
 	}
-}
-
-void ChatPage::on_linkColorButton_clicked()
-{
-	bool ok;
-	QRgb color = QColorDialog::getRgba(rgbLinkColor, &ok, window());
-	if (ok) {
-		rgbLinkColor=color;
-		QPixmap pix(24, 24);
-		pix.fill(color);
-		ui.linkColorButton->setIcon(pix);
-		Settings->setLinkColor(rgbLinkColor);
-	}
-}
-
-void ChatPage::on_resetButton_clicked()
-{
-	QRgb color  = QString::number(QColor(3, 155, 198).rgba()).toUInt();
-	defaultColor = color;
-	QPixmap pix(24, 24);
-	pix.fill(color);
-	ui.linkColorButton->setIcon(pix);
-	Settings->setLinkColor(defaultColor);
 }
 
 void ChatPage::distantChatComboBoxChanged(int i)
