@@ -22,7 +22,7 @@ env:
   DISABLE_WORKFLOW: "false"
 
 jobs:  
-  pre-check:
+    pre-check:
     runs-on: windows-latest
     outputs:
       workflow_disabled: ${{ steps.check-disabled.outputs.disabled }}
