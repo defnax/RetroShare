@@ -21,7 +21,7 @@ env:
   USE_ARTIFACT: false
   DISABLE_WORKFLOW: "false"
 
-jobs:  
+jobs:
     pre-check:
     runs-on: windows-latest
     outputs:
