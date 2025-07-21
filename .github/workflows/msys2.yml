@@ -62,4 +62,5 @@ jobs:
         run: |
           env
           qmake ../RetroShare -spec win32-g++
+          git submodule update --init
           mingw32-make -j3
