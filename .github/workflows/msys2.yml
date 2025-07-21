@@ -48,6 +48,7 @@ jobs:
             mingw-w64-x86_64-json-c
             mingw-w64-x86_64-libbotan
             mingw-w64-x86_64-asio
+    steps:
       - name: CI-Build
         run: |
           echo 'Running in MSYS2!'
