@@ -62,5 +62,5 @@ jobs:
         run: |
           env
           qmake ../RetroShare -spec win32-g++
-          git submodule update --init
+          git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/
           mingw32-make -j3
