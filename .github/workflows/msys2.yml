@@ -60,5 +60,6 @@ jobs:
 
       - name: CI-Build
         run: |
-          echo 'Running in MSYS2!'
-          ./ci-msys2-build.sh
+          env
+          qmake ../RetroShare -spec win32-g++
+          mingw32-make -j3
