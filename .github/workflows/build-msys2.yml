@@ -84,9 +84,7 @@ jobs:
             mingw-w64-x86_64-json-c
             mingw-w64-x86_64-libbotan
             mingw-w64-x86_64-asio
-        - name: CI-Build
+    - name: CI-Build
         run: |
             qmake
             mingw32-make
-
-
