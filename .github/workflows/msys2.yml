@@ -2,11 +2,11 @@ name: MSYS2 Build
 
 on:
   push:
-    branches:
-    - master
+    paths-ignore:
+    - '**/*.md'
   pull_request:
-    branches:
-    - master
+    paths-ignore:
+    - '**/*.md'
 
 concurrency:  
   group: ${{ github.workflow}}-${{ github.head_ref }}  
