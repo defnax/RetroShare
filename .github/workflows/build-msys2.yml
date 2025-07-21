@@ -37,7 +37,7 @@ jobs:
         else
           echo "::set-output name=disabled::false"
         fi
-  build-msys2:
+    build-msys2:
     if: needs.pre-check.outputs.workflow_disabled != 'true'
     needs: pre-check
     strategy:
