@@ -22,7 +22,7 @@ env:
   DISABLE_WORKFLOW: "false"
 
 jobs:
-    pre-check:
+  pre-check:
     runs-on: windows-latest
     outputs:
       workflow_disabled: ${{ steps.check-disabled.outputs.disabled }}
@@ -40,6 +40,7 @@ jobs:
     build-msys2:
     if: needs.pre-check.outputs.workflow_disabled != 'true'
     needs: pre-check
+
     strategy:
       matrix:
        include:
@@ -49,6 +50,7 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -84,7 +86,8 @@ jobs:
             mingw-w64-x86_64-json-c
             mingw-w64-x86_64-libbotan
             mingw-w64-x86_64-asio
+
     - name: CI-Build
-        run:
+        run: |
             qmake
             mingw32-make
