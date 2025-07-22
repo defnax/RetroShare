@@ -61,6 +61,6 @@ jobs:
       - name: CI-Build
         run: |
           env
-          qmake ../RetroShare -spec win32-g++ "CONFIG+=no_rs_sam3"
+          qmake ../RetroShare -spec win32-g++ "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3"
           git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/
           mingw32-make -j3
