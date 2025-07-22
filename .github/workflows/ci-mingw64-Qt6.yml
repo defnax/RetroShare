@@ -1,4 +1,4 @@
-name: MINGW64 Qt6 Build
+name: W64 Qt6 Build
 
 on:
   push:
