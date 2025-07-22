@@ -1,4 +1,4 @@
-name: MINGW64 Build
+name: MINGW64 Qt6 Build
 
 on:
   push:
