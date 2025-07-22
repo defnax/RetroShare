@@ -8,6 +8,10 @@ on:
     paths-ignore:
     - '**/*.md'
 
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
 concurrency:  
   group: ${{ github.workflow}}-${{ github.head_ref }}  
   cancel-in-progress: true
@@ -67,7 +71,7 @@ jobs:
       - name: Configure CMake
         run: |
           cd retroshare-gui
-          cmake -B ${{github.workspace}}/build -DRS_WEBUI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          cmake -B ${{github.workspace}}/build -DRS_WEBUI=ON -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
