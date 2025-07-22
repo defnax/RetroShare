@@ -66,5 +66,4 @@ jobs:
           cd retroshare-gui
           mkdir build-dir
           cd build-dir
-          cmake -DRS_WEBUI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. && make -j
-          ls
+          cmake --build -DRS_WEBUI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
