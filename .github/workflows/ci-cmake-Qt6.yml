@@ -34,12 +34,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Checkout submodules
-        run: |
-          env
-          git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/
-          git submodule update --init supportlibs/librnp supportlibs/rapidjson
-
       - name: Setup MSYS2
         uses: msys2/setup-msys2@40677d36a502eb2cf0fb808cc9dec31bf6152638 # v2.28.0
         with:
@@ -67,6 +61,12 @@ jobs:
             mingw-w64-x86_64-json-c
             mingw-w64-x86_64-libbotan
             mingw-w64-x86_64-asio
+
+      - name: Checkout submodules
+        run: |
+          env
+          git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/
+          git submodule update --init supportlibs/librnp supportlibs/rapidjson
 
       - name: Configure CMake
         run: |
