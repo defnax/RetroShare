@@ -74,4 +74,4 @@ jobs:
           cmake -B ${{github.workspace}}/build -G "MinGW Makefiles" -DRS_WEBUI=ON -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
       - name: Build
-        run: mingw32-make ${{github.workspace}}/build
+        run: mingw32-make
