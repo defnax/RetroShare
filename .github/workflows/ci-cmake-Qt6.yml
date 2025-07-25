@@ -71,5 +71,5 @@ jobs:
 
       - name: Build
         run: |
-          qmake ../RetroShare -spec win32-g++ "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3"
+          qmake6 ../RetroShare -spec win32-g++ "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3"
           mingw32-make -j3
