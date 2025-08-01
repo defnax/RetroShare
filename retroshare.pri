@@ -141,7 +141,7 @@ rs_macos10.13:CONFIG -= rs_macos10.11
 rs_macos10.14:CONFIG -= rs_macos10.11
 rs_macos10.15:CONFIG -= rs_macos10.11
 rs_macos11.1:CONFIG -= rs_macos10.11
-rs_macos13.3:CONFIG -= rs_macos10.11
+rs_macos14.0:CONFIG -= rs_macos10.11
 
 # To enable JSON API append the following assignation to qmake command line
 # "CONFIG+=rs_jsonapi"
@@ -856,10 +856,10 @@ macx-* {
 		QMAKE_CXXFLAGS += -Wno-nullability-completeness
 		QMAKE_CFLAGS += -Wno-nullability-completeness
 	}
-	rs_macos13.3 {
-		message(***retroshare.pri: Set Target and SDK to MacOS 13.3 )
-		QMAKE_MACOSX_DEPLOYMENT_TARGET=15.5
-		QMAKE_MAC_SDK = macosx13.3
+	rs_macos14.0 {
+		message(***retroshare.pri: Set Target and SDK to MacOS 14.0 )
+		QMAKE_MACOSX_DEPLOYMENT_TARGET=14.0
+		QMAKE_MAC_SDK = macosx14.0
 		QMAKE_CXXFLAGS += -Wno-nullability-completeness
 		QMAKE_CFLAGS += -Wno-nullability-completeness
 	}
