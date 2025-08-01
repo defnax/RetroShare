@@ -141,6 +141,7 @@ rs_macos10.13:CONFIG -= rs_macos10.11
 rs_macos10.14:CONFIG -= rs_macos10.11
 rs_macos10.15:CONFIG -= rs_macos10.11
 rs_macos11.1:CONFIG -= rs_macos10.11
+rs_macos13.3:CONFIG -= rs_macos10.11
 
 # To enable JSON API append the following assignation to qmake command line
 # "CONFIG+=rs_jsonapi"
@@ -855,6 +856,13 @@ macx-* {
 		QMAKE_CXXFLAGS += -Wno-nullability-completeness
 		QMAKE_CFLAGS += -Wno-nullability-completeness
 	}
+	rs_macos13.3 {
+		message(***retroshare.pri: Set Target and SDK to MacOS 13.3 )
+		QMAKE_MACOSX_DEPLOYMENT_TARGET=15.5
+		QMAKE_MAC_SDK = macosx13.3
+		QMAKE_CXXFLAGS += -Wno-nullability-completeness
+		QMAKE_CFLAGS += -Wno-nullability-completeness
+	}
 
 
 
@@ -862,7 +870,7 @@ macx-* {
 	BIN_DIR += "/Applications/Xcode.app/Contents/Developer/usr/bin"
 	INCLUDEPATH += "/usr/local/include"
 	RS_UPNP_LIB = miniupnpc
-	QT += macextras
+	#QT += macextras
 	INCLUDEPATH += "/usr/local/opt/openssl/include"
 	QMAKE_LIBDIR += "/usr/local/opt/openssl/lib"
 	QMAKE_LIBDIR += "/usr/local/opt/sqlcipher/lib"
@@ -870,6 +878,8 @@ macx-* {
 	INCLUDEPATH += "/usr/local/opt/libxml2/include/libxml2"
 	INCLUDEPATH += "/usr/local/opt/libxslt/include"
 	QMAKE_LIBDIR += "/usr/local/opt/libxslt/lib"
+	INCLUDEPATH+="/opt/homebrew/opt/openssl@3/include"
+	INCLUDEPATH+="/opt/homebrew/opt/rapidjson/include"
 }
 
 # If not yet defined attempt UPnP library autodetection should works at least
