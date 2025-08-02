@@ -2,7 +2,6 @@
 
 ## Compilation on Linux
 
-![Linux tux logo](../img/developer/tux_logo.png "GNU/Linux")
 
 ### Install package dependencies:
 #### Debian/Ubuntu
@@ -80,9 +79,9 @@ The executable produced will be:
 
 Packagers can use PREFIX and LIB\_DIR to customize the installation paths:
 ```bash
-	qmake PREFIX=/usr LIB_DIR=/usr/lib64 "CONFIG-=debug" "CONFIG+=release"
-	make
-	make INSTALL_ROOT=${PKGDIR} install
+   qmake PREFIX=/usr LIB_DIR=/usr/lib64 "CONFIG-=debug" "CONFIG+=release"
+  make
+  make INSTALL_ROOT=${PKGDIR} install
 ```
  
  
