@@ -60,7 +60,7 @@ Additional dependencies for plugins:
 
 ### Compile
 ```bash
-   cd trunk
+   cd retroshare
    qmake CONFIG+=release CONFIG+=rs_jsonapi CONFIG+=rs_webui
    make
 ```
