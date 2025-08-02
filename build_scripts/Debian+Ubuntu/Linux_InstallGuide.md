@@ -1,10 +1,10 @@
-#Compilation
+# Compilation
 
-##Compilation on Linux
+## Compilation on Linux
 
 ![Linux tux logo](../img/developer/tux_logo.png "GNU/Linux")
 
-###Install package dependencies:
+### Install package dependencies:
 #### Debian/Ubuntu
 ```bash
    sudo apt-get install g++ cmake qt5-qmake qtmultimedia5-dev \
@@ -47,26 +47,26 @@ Additional dependencies for plugins:
    rapidjson libupnp libxslt libxss sqlcipher botan2 bzip2 json-c
 ```
 
-###Checkout the source code
+### Checkout the source code
 ```bash
    cd ~ 
    git clone https://github.com/RetroShare/RetroShare.git retroshare
 ```
 
-###Checkout the submodules
+### Checkout the submodules
 ```bash
    git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/ supportlibs/librnp
    git submodule update --init --remote supportlibs/rapidjson supportlibs/restbed
 ```
 
-###Compile
+### Compile
 ```bash
    cd trunk
    qmake CONFIG+=release CONFIG+=rs_jsonapi CONFIG+=rs_webui
    make
 ```
 
-###Install
+### Install
 ```bash
    sudo make install
 ```
@@ -86,7 +86,7 @@ Packagers can use PREFIX and LIB\_DIR to customize the installation paths:
 ```
  
  
-###libsqlcipher
+### libsqlcipher
 If libsqlcipher is not available as a package
 
 You need to place sqlcipher so that the hierarchy is:
@@ -109,7 +109,7 @@ You need to place sqlcipher so that the hierarchy is:
 ``` 
 
 
-###Compile and run tests  
+### Compile and run tests  
        qmake CONFIG+=tests  
        make  
        tests/unittests/unittests  
