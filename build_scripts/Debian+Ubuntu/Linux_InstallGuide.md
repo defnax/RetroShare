@@ -40,6 +40,13 @@ Additional dependencies for plugins:
    libxslt-devel speex-devel speexdsp-devel
 ```
 
+#### Linux Mint
+```bash
+   sudo apt-get install git g++ cmake qt5-qmake qtmultimedia5-dev \
+   libqt5x11extras5-dev libupnp-dev libxss-dev libssl-dev libsqlcipher-dev \
+   rapidjson-dev doxygen libbz2-dev libjson-c-dev libbotan-2-dev libasio-dev
+```
+
 #### Arch Linux
 ```bash
    pacman -S base-devel libgnome-keyring cmake qt5-tools qt5-multimedia qt5-x11extras \
@@ -54,13 +61,13 @@ Additional dependencies for plugins:
 
 ### Checkout the submodules
 ```bash
-   git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/ supportlibs/librnp
-   git submodule update --init --remote supportlibs/rapidjson supportlibs/restbed
+   cd retroshare
+   git submodule update --init --remote libbitdht/ libretroshare/ retroshare-webui/ 
+   git submodule update --init --remote supportlibs/librnp supportlibs/rapidjson supportlibs/restbed
 ```
 
 ### Compile
 ```bash
-   cd retroshare
    qmake CONFIG+=release CONFIG+=rs_jsonapi CONFIG+=rs_webui
    make
 ```
