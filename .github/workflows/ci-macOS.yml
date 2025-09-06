@@ -55,7 +55,7 @@ jobs:
           botan@2
           libxslt
           libxml2
-          qt
+          qt@5
 
       - name: Checkout submodules
         run: |
