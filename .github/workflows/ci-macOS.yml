@@ -50,7 +50,6 @@ jobs:
           miniupnpc
           rapidjson
           sqlcipher
-          cmake
           bzip2
           zlib
           botan@2
