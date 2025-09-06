@@ -83,5 +83,6 @@ jobs:
           QMAKE_CFLAGS+=-mmacosx-version-min=10.13 \
           QMAKE_CFLAGS+=-Wno-nullability-completeness \
           QMAKE_LFLAGS+=-v \
-          CONFIG+=no_retroshare_service
+          CONFIG+=no_retroshare_service \
+          CONFIG+=no_retroshare_friendserver
           make
