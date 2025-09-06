@@ -823,6 +823,13 @@ macx-* {
 		QMAKE_CXXFLAGS += -Wno-nullability-completeness
 		QMAKE_CFLAGS += -Wno-nullability-completeness
 	}
+	rs_macos14.0 {
+		message(***retroshare.pri: Set Target and SDK to MacOS 14.0 )
+		QMAKE_MACOSX_DEPLOYMENT_TARGET=10.13
+		QMAKE_MAC_SDK = macosx14.0
+		QMAKE_CXXFLAGS += -Wno-nullability-completeness
+		QMAKE_CFLAGS += -Wno-nullability-completeness
+	}
 	rs_macos14.5 {
 		message(***retroshare.pri: Set Target and SDK to MacOS 14.5 )
 		QMAKE_MACOSX_DEPLOYMENT_TARGET=10.13
