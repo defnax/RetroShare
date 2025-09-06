@@ -77,5 +77,10 @@ jobs:
           QMAKE_LIBDIR+="/opt/homebrew/opt/sqlcipher/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/miniupnpc/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/libxslt/lib" \
-          QMAKE_LIBDIR+="/opt/homebrew/opt/libxml2/lib"
+          QMAKE_LIBDIR+="/opt/homebrew/opt/libxml2/lib" \
+          QMAKE_CC=/Library/Developer/CommandLineTools/usr/bin/clang \
+          QMAKE_CXX=/Library/Developer/CommandLineTools/usr/bin/clang++ \
+          QMAKE_CFLAGS+=-mmacosx-version-min=10.13 \
+          QMAKE_CFLAGS+=-Wno-nullability-completeness \
+          QMAKE_LFLAGS+=-v
           make
