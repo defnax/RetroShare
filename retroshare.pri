@@ -858,7 +858,7 @@ macx-* {
 	BIN_DIR += "/Applications/Xcode.app/Contents/Developer/usr/bin"
 	INCLUDEPATH += "/usr/local/include"
 	RS_UPNP_LIB = miniupnpc
-	QT += macextras
+	lessThan(QT_MAJOR_VERSION, 6): QT += macextras
 	INCLUDEPATH += "/usr/local/opt/openssl/include"
 	QMAKE_LIBDIR += "/usr/local/opt/openssl/lib"
 	QMAKE_LIBDIR += "/usr/local/opt/sqlcipher/lib"
