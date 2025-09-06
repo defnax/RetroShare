@@ -55,7 +55,7 @@ jobs:
           botan@2
           libxslt
           libxml2
-          qt@5
+          qt
 
       - name: Checkout submodules
         run: |
@@ -65,5 +65,5 @@ jobs:
 
       - name: CI-Build
         run: |
-          qmake . -r "CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" "CONFIG += rs_no_rnplib" "CONFIG+=rs_macos14.0"
+          qmake6 . -r "QT -= macextras ""CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" "CONFIG += rs_no_rnplib" "CONFIG+=rs_macos14.0"
           make
