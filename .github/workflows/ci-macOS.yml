@@ -65,5 +65,5 @@ jobs:
 
       - name: CI-Build
         run: |
-          qmake6 . -r "CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" "CONFIG+=rs_macos14.0"
+          qmake6 . -r "CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" "CONFIG += rs_no_rnplib""CONFIG+=rs_macos14.0" -I/opt/homebrew/Cellar/openssl@3/3.5.1/include
           make
