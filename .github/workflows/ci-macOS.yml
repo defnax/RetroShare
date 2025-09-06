@@ -82,5 +82,6 @@ jobs:
           QMAKE_CXX=/Library/Developer/CommandLineTools/usr/bin/clang++ \
           QMAKE_CFLAGS+=-mmacosx-version-min=10.13 \
           QMAKE_CFLAGS+=-Wno-nullability-completeness \
-          QMAKE_LFLAGS+=-v
+          QMAKE_LFLAGS+=-v \
+          CONFIG+=no_retroshare_service
           make
