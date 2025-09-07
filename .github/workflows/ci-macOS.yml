@@ -61,7 +61,7 @@ jobs:
           qt
 
       - name: Show Botan version
-        run: pkg-config --cflags botan@3
+        run: pkg-config --cflags botan
 
       - name: Checkout submodules
         run: |
