@@ -60,6 +60,9 @@ jobs:
           libxml2
           qt
 
+      - name: Show Botan Info
+        run: brew info botan@3
+
       - name: Checkout submodules
         run: |
           env
