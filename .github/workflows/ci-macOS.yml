@@ -73,7 +73,7 @@ jobs:
         run: |
           qmake6 . -r "CONFIG+=rs_macos14.0" "CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" \
           INCLUDEPATH+="/opt/homebrew/opt/botan@3/include" \
-          INCLUDEPATH+="/opt/homebrew/Cellar/botan/include" \
+          INCLUDEPATH+="/opt/homebrew/Cellar/botan/3.9.0/include" \
           INCLUDEPATH+="/opt/homebrew/opt/json-c/include" \
           INCLUDEPATH+="/opt/homebrew/opt/openssl@3/include" \
           INCLUDEPATH+="/opt/homebrew/opt/rapidjson/include" \
