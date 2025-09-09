@@ -78,6 +78,5 @@ jobs:
           QMAKE_LIBDIR+="/opt/homebrew/opt/miniupnpc/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/libxslt/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/libxml2/lib" \
-          CONFIG+=no_retroshare_service \
           CONFIG+=no_retroshare_friendserver
           make
