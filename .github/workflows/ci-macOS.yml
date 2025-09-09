@@ -52,7 +52,7 @@ jobs:
           sqlcipher
           bzip2
           zlib
-          botan@3
+          botan@2
           json-c
           asio
           doxygen
@@ -60,8 +60,8 @@ jobs:
           libxml2
           qt
 
-      - name: Show Botan Info
-        run: brew info botan@3
+      - name: Show Botan Version
+        run: brew info botan@2
 
       - name: Checkout submodules
         run: |
