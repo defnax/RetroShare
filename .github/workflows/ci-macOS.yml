@@ -72,8 +72,8 @@ jobs:
       - name: CI-Build
         run: |
           qmake6 . -r "CONFIG+=rs_macos14.0" "CONFIG+=release" "CONFIG+=rs_autologin" "CONFIG+=no_rs_sam3" "CONFIG+=no_rs_sam3_libsam3" \
-          INCLUDEPATH+="/opt/homebrew/opt/botan@3/include" \
-          INCLUDEPATH+="/opt/homebrew/Cellar/botan/3.9.0/include" \
+          INCLUDEPATH+="/opt/homebrew/opt/botan@2/include" \
+          INCLUDEPATH+="/opt/homebrew/Cellar/botan@2/2.19.5/include" \
           INCLUDEPATH+="/opt/homebrew/opt/json-c/include" \
           INCLUDEPATH+="/opt/homebrew/opt/openssl@3/include" \
           INCLUDEPATH+="/opt/homebrew/opt/rapidjson/include" \
@@ -81,7 +81,7 @@ jobs:
           INCLUDEPATH+="/opt/homebrew/opt/miniupnpc/include" \
           INCLUDEPATH+="/opt/homebrew/opt/libxslt/include" \
           INCLUDEPATH+="/opt/homebrew/opt/libxml2/include" \
-          QMAKE_LIBDIR+="/opt/homebrew/opt/botan@3/lib/" \
+          QMAKE_LIBDIR+="/opt/homebrew/opt/botan@2/lib/" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/json-c/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/openssl@3/lib" \
           QMAKE_LIBDIR+="/opt/homebrew/opt/rapidjson/lib" \
