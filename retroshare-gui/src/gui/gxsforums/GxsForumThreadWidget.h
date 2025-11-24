@@ -236,6 +236,7 @@ private:
     QList<RsGxsMessageId> mSavedExpandedMessages;
 
     FontSizeHandler mFontSizeHandler;
+    ForumFontSizeHandler mForumSizeHandler;
 
     Ui::GxsForumThreadWidget *ui;
     RsEventsHandlerId_t mEventHandlerId;

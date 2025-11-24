@@ -384,6 +384,8 @@ GxsForumThreadWidget::GxsForumThreadWidget(const RsGxsGroupId &forumId, QWidget 
     mFontSizeHandler.registerFontSize(ui->threadTreeWidget, 1.4f, [this](QAbstractItemView *view, int) {
         mThreadModel->setFont(view->font());
     });
+
+    mForumSizeHandler.registerFontSize(ui->postText);
 }
 
 void GxsForumThreadWidget::handleEvent_main_thread(std::shared_ptr<const RsEvent> event)
