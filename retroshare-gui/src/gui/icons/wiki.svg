@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="Capa_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 512 512"
+   style="enable-background:new 0 0 512 512;"
+   xml:space="preserve"
+   width="512px"
+   height="512px"
+   class=""
+   sodipodi:docname="wiki.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs7" /><sodipodi:namedview
+   id="namedview7"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="true"
+   inkscape:zoom="1.4589844"
+   inkscape:cx="256"
+   inkscape:cy="256"
+   inkscape:window-width="1920"
+   inkscape:window-height="986"
+   inkscape:window-x="-11"
+   inkscape:window-y="-11"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g7"><inkscape:grid
+     id="grid7"
+     units="px"
+     originx="0"
+     originy="0"
+     spacingx="1"
+     spacingy="1"
+     empcolor="#0099e5"
+     empopacity="0.30196078"
+     color="#0099e5"
+     opacity="0.14901961"
+     empspacing="5"
+     enabled="true"
+     visible="true" /></sodipodi:namedview><g
+   transform="matrix(0.8125254,0,0,0.8125254,47.984832,45.984832)"
+   id="g7"><g
+     id="g2"
+     style="fill:#02c3fd;fill-opacity:1">
+	<g
+   id="g1"
+   style="fill:#02c3fd;fill-opacity:1">
+		<path
+   d="M 467,0 H 361 V 120 H 512 V 45 C 512,20.186 491.814,0 467,0 Z"
+   data-original="#000000"
+   class="active-path"
+   data-old_color="#000000"
+   fill="#039bd5"
+   id="path1"
+   style="fill:#02c3fd;fill-opacity:1" />
+	</g>
+</g><g
+     id="g4">
+	<g
+   id="g3">
+		<path
+   d="M 45,0 C 20.186,0 0,20.186 0,45 v 75 H 331 V 0 Z m 61,90 H 76 C 67.709,90 61,83.291 61,75 61,66.709 67.709,60 76,60 h 30 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 z m 90,0 h -30 c -8.291,0 -15,-6.709 -15,-15 0,-8.291 6.709,-15 15,-15 h 30 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 z m 90,0 h -30 c -8.291,0 -15,-6.709 -15,-15 0,-8.291 6.709,-15 15,-15 h 30 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 z"
+   data-original="#000000"
+   class="active-path"
+   data-old_color="#000000"
+   fill="#039bd5"
+   id="path2"
+   style="fill:#02c3fd;fill-opacity:1" />
+	</g>
+</g><g
+     id="g6"
+     style="fill:#02c3fd;fill-opacity:1">
+	<g
+   id="g5"
+   style="fill:#02c3fd;fill-opacity:1">
+		<path
+   d="m 0,150 v 317 c 0,24.814 20.186,45 45,45 h 422 c 24.814,0 45,-20.186 45,-45 V 150 Z m 406,90 H 386.805 L 330.224,410.746 C 328.188,416.869 322.46,421 316,421 c -6.46,0 -12.188,-4.131 -14.224,-10.254 L 256,272.432 210.224,410.746 c -4.072,12.246 -24.375,12.246 -28.447,0 L 125.195,240 H 106 c -8.291,0 -15,-6.709 -15,-15 0,-8.291 6.709,-15 15,-15 h 60 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 h -9.194 L 196,358.568 235.194,240 H 226 c -8.291,0 -15,-6.709 -15,-15 0,-8.291 6.709,-15 15,-15 h 60 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 h -9.194 L 316,358.568 355.194,240 H 346 c -8.291,0 -15,-6.709 -15,-15 0,-8.291 6.709,-15 15,-15 h 60 c 8.291,0 15,6.709 15,15 0,8.291 -6.709,15 -15,15 z"
+   data-original="#000000"
+   class="active-path"
+   data-old_color="#000000"
+   fill="#039bd5"
+   id="path4"
+   style="fill:#02c3fd;fill-opacity:1" />
+	</g>
+</g></g> </svg>

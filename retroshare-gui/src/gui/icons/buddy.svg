@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg9"
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   sodipodi:docname="buddy.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs13" />
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="0.48535156"
+     inkscape:cx="182.34205"
+     inkscape:cy="174.1006"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g15"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid381"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px" />
+  </sodipodi:namedview>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g15">
+    <path
+       style="fill:#02c3fd;stroke:none;fill-opacity:1"
+       d="m 227.68604,254.32407 c -60.745,8 -98,54.247 -98,114.576 0,22.177 2.541,43.788 20.039,59.711 19.17,17.443 41.651,17.289 65.961,17.289 h 61 c 16.926,0 35.243,1.972 52,-0.428 66.485,-9.525 70.212,-96.046 40.302,-142.572 -30.398,-47.284 -89.396,-55.411 -141.302,-48.576 z"
+       id="path955" />
+    <path
+       style="fill:#02c3fd;stroke:none;fill-opacity:1"
+       d="m 249.68604,62.325263 c -14.465,1.969 -27.797,6.0094 -40,14.2461 -9.275,6.260399 -17.007,14.037999 -23.251,23.328702 -40.889,60.846995 12.639,140.498995 83.251,131.713995 11.703,-1.456 22.971,-5.589 33,-11.779 62.522,-38.59 47.838,-139.211098 -25,-155.509797 -9.079,-2.0317 -18.726,-3.262401 -28,-2"
+       id="path947" />
+    <path
+       style="fill:#000000"
+       id="path117"
+       d="" />
+  </g>
+</svg>
