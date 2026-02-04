@@ -138,38 +138,21 @@ void WireDialog::handleEvent_main_thread(std::shared_ptr<const RsEvent> event)
 
         // The following switch statements refresh the wire feed whenever there is a new event
 
-        std::cout<<"***************the wire event code is ************************* "<<std::endl;
         switch(e->mWireEventCode)
         {
 
         case RsWireEventCode::READ_STATUS_CHANGED:
             updateGroupStatisticsReal(e->mWireGroupId); // update the list immediately
-            std::cout<<"1"<<std::endl;
             return;
 
         case RsWireEventCode::STATISTICS_CHANGED:
-            std::cout<<"2"<<std::endl;
-
         case RsWireEventCode::NEW_POST:
-            std::cout<<"3"<<std::endl;
-
         case RsWireEventCode::NEW_REPLY:
-            std::cout<<"4"<<std::endl;
-
         case RsWireEventCode::NEW_LIKE:
-            std::cout<<"5"<<std::endl;
-
         case RsWireEventCode::NEW_REPUBLISH:
-            std::cout<<"6"<<std::endl;
-
         case RsWireEventCode::POST_UPDATED:
-            std::cout<<"7"<<std::endl;
-
         case RsWireEventCode::FOLLOW_STATUS_CHANGED:
-            std::cout<<"8"<<std::endl;
-
         case RsWireEventCode::NEW_WIRE:
-            std::cout<<"9"<<std::endl;
             updateGroupStatisticsReal(e->mWireGroupId);
             break;
 
@@ -1390,7 +1373,6 @@ void WireDialog::postGroupsPulses(std::list<RsWirePulseSPtr> pulses)
 
 void WireDialog::getServiceStatistics(GxsServiceStatistic& stats) const
 {
-    std::cout<<"inside the getServiceStatics *********"<<std::endl;
     if(!mCachedGroupStats.empty())
     {
         stats = GxsServiceStatistic(); // clears everything
@@ -1406,13 +1388,6 @@ void WireDialog::getServiceStatistics(GxsServiceStatistic& stats) const
             stats.mNumThreadMsgsUnread += s.mNumThreadMsgsUnread;
             stats.mNumChildMsgsNew     += s.mNumChildMsgsNew ;
             stats.mNumChildMsgsUnread  += s.mNumChildMsgsUnread ;
-            std::cout<<stats.mNumMsgs  <<std::endl;
-            std::cout<<stats.mNumGrps  <<std::endl;
-            std::cout<<stats.mSizeOfMsgs  <<std::endl;
-            std::cout<<stats.mNumThreadMsgsNew  <<std::endl;
-            std::cout<<stats.mNumThreadMsgsUnread  <<std::endl;
-            std::cout<<stats.mNumChildMsgsNew  <<std::endl;
-            std::cout<<stats.mNumChildMsgsUnread   <<std::endl;
         }
 
         // Also save the service statistics in conf file, so that we can display it right away at start.
