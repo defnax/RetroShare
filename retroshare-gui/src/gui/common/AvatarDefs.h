@@ -26,14 +26,15 @@
 #include <retroshare/rstypes.h>
 #include <retroshare/rsgxsifacetypes.h>
 
-#define AVATAR_DEFAULT_IMAGE ":/images/no_avatar_background.png"
+#define AVATAR_DEFAULT_IMAGE ":/icons/no_avatar.png"
+#define AVATAR_DEFAULT_IMAGE_SQUARE ":/icons/no_avatar_square.png"
 
 class QPixmap;
 
 class AvatarDefs
 {
 public:
-    static void getOwnAvatar(QPixmap &avatar, const QString& defaultImage = AVATAR_DEFAULT_IMAGE);
+    static void getOwnAvatar(QPixmap &avatar, const QString& defaultImage = AVATAR_DEFAULT_IMAGE_SQUARE);
 
     static bool getAvatarFromSslId(const RsPeerId& sslId, QPixmap &avatar, const QString& defaultImage = AVATAR_DEFAULT_IMAGE);
     static bool getAvatarFromGpgId(const RsPgpId & gpgId, QPixmap &avatar, const QString& defaultImage = AVATAR_DEFAULT_IMAGE);

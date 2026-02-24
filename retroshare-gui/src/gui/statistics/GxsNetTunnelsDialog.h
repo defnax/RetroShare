@@ -1,7 +1,7 @@
 /*******************************************************************************
- * retroshare-gui/src/gui/Posted/PhotoView.h                                   *
+ * gui/statistics/GxsNetTunnelsDialog.h                                        *
  *                                                                             *
- * Copyright (C) 2020 by RetroShare Team      <retroshare.project@gmail.com>   *
+ * Copyright (c) 2025 Retroshare Team <retroshare.project@gmail.com>           *
  *                                                                             *
  * This program is free software: you can redistribute it and/or modify        *
  * it under the terms of the GNU Affero General Public License as              *
@@ -18,51 +18,40 @@
  *                                                                             *
  *******************************************************************************/
 
-#ifndef _PHOTO_VIEW_H
-#define _PHOTO_VIEW_H
+#pragma once
+#include <QAbstractItemDelegate>
 
-#include "ui_PhotoView.h"
+#include <retroshare/rsturtle.h>
+#include <retroshare/rstypes.h>
 
-#include <QDialog>
+#include <retroshare-gui/RsAutoUpdatePage.h>
 
-namespace Ui {
-	class PhotoView;
-}
+#include "ui_GxsNetTunnelsDialog.h"
 
-class PhotoView : public QDialog
+class QModelIndex;
+class QPainter;
+class NetTunnelsListDelegate ;
+
+class GxsNetTunnelsDialog: public RsAutoUpdatePage,  public Ui::GxsNetTunnelsDialog
 {
 	Q_OBJECT
 
 public:
-	/** Default Constructor */
-	PhotoView(QWidget *parent = 0);
+	GxsNetTunnelsDialog(QWidget *parent = NULL) ;
+	~GxsNetTunnelsDialog();
 
-	/** Default Destructor */
-	~PhotoView();
-
+	void updateTunnels();
 
 public slots:
-	void setPixmap(const QPixmap& pixmap);
-	void setMovie(QMovie* movie);  // New: support for animated images
-	void setTitle (const QString &text);
-	void setName(const RsGxsId& authorID);
-	void setTime(const QString& text);
-	void setGroupId(const RsGxsGroupId &groupId);
-	void setMessageId(const RsGxsMessageId& messageId);
-	void setGroupNameString(const QString& name);
-
-private slots:
-	void copyMessageLink();
+	virtual void updateDisplay() ;
 
 private:
-	RsGxsMessageId mMessageId;
-	RsGxsGroupId mGroupId;
-	QMovie* mMovie = nullptr;  // Track QMovie for cleanup
+	void processSettings(bool bLoad);
+	bool m_ProcessSettings;
 
-  /** Qt Designer generated object */
-  Ui::PhotoView  *ui;
+	QTreeWidgetItem *peers_item ;
 
-};
-
-#endif
-
+protected:
+	NetTunnelsListDelegate *TunnelDelegate;
+	void hideEvent(QHideEvent *event) override;
+} ;

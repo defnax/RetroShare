@@ -418,9 +418,11 @@ HEADERS +=  rshare.h \
             gui/statistics/DhtWindow.h \
             gui/statistics/GlobalRouterStatistics.h \
             gui/statistics/GxsTransportStatistics.h \
+            gui/statistics/GxsNetTunnelsDialog.h \
             gui/statistics/StatisticsWindow.h \
             gui/statistics/BwCtrlWindow.h \
             gui/statistics/RttStatistics.h \
+            gui/statistics/TunnelStatisticsDialog.h \
             gui/FileTransfer/TransferUserNotify.h \
             gui/plugins/PluginInterface.h \
             gui/im_history/ImHistoryBrowser.h \
@@ -723,9 +725,11 @@ FORMS +=    gui/StartDialog.ui \
             gui/statistics/GxsIdStatistics.ui \
             gui/statistics/GlobalRouterStatistics.ui \
             gui/statistics/GxsTransportStatistics.ui \
+            gui/statistics/GxsNetTunnelsDialog.ui \
             gui/statistics/StatisticsWindow.ui \
             gui/statistics/BwCtrlWindow.ui \
             gui/statistics/RttStatistics.ui \
+            gui/statistics/TunnelStatisticsDialog.ui \
             gui/GetStartedDialog.ui \
             util/RichTextEdit.ui
 
@@ -974,9 +978,11 @@ SOURCES +=  main.cpp \
             gui/statistics/GxsIdStatistics.cpp \
             gui/statistics/GlobalRouterStatistics.cpp \
             gui/statistics/GxsTransportStatistics.cpp \
+            gui/statistics/GxsNetTunnelsDialog.cpp \
             gui/statistics/StatisticsWindow.cpp \
             gui/statistics/BwCtrlWindow.cpp \
             gui/statistics/RttStatistics.cpp \
+            gui/statistics/TunnelStatisticsDialog.cpp \
             gui/statistics/BWGraph.cpp \
     util/RsSyntaxHighlighter.cpp \
     util/imageutil.cpp \
@@ -1378,6 +1384,7 @@ posted {
 		gui/Posted/PostedListWidgetWithModel.h \
 		gui/Posted/PostedPostsModel.h \
 		gui/Posted/BoardPostDisplayWidget.h \
+		gui/Posted/BoardPostImageHelper.h \
 		gui/Posted/PostedItem.h \
 		gui/Posted/PostedCardView.h \
 		gui/Posted/PostedGroupDialog.h \
@@ -1404,6 +1411,7 @@ posted {
 	SOURCES += gui/Posted/PostedDialog.cpp \
 		gui/Posted/PostedListWidgetWithModel.cpp \
 		gui/Posted/BoardPostDisplayWidget.cpp \
+		gui/Posted/BoardPostImageHelper.cpp \
 		gui/Posted/PostedPostsModel.cpp \
 		gui/feeds/PostedGroupItem.cpp \
 		gui/Posted/PostedItem.cpp \
