@@ -30,6 +30,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QStackedWidget>
 
 // Qt Charts includes
 #include <QBarSeries>
@@ -65,13 +66,29 @@ CumulativeStatsWidget::CumulativeStatsWidget(QWidget *parent)
     : RsAutoUpdatePage(5000, parent)  // 5 seconds to reduce CPU usage
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    // Create the Page Selector (ComboBox)
+    pageSelector = new QComboBox(this);
+    pageSelector->addItem(tr("Friends Statistics"), 0);
+    pageSelector->addItem(tr("Services Statistics"), 1);
     
-    // Create tab widget
-    tabWidget = new QTabWidget(this);
-    
-    // === FRIENDS TAB ===
-    QWidget *friendsTab = new QWidget();
-    QVBoxLayout *friendsLayout = new QVBoxLayout(friendsTab);
+    connect(pageSelector, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &CumulativeStatsWidget::handlePageSwitch);
+
+    // Setup the Stacked Widget
+    stackedWidget = new QStackedWidget(this);
+
+    // --- Create Friends Page ---
+    peerPage = new QWidget();
+    QVBoxLayout *friendsLayout = new QVBoxLayout(peerPage);
+    // ... add peerTree and charts to peerLayout ...
+    stackedWidget->addWidget(peerPage);
+
+    // --- Create Services Page ---
+    servicePage = new QWidget();
+    QVBoxLayout *servicesLayout = new QVBoxLayout(servicePage);
+    // ... add serviceTree and charts to serviceLayout ...
+    stackedWidget->addWidget(servicePage);
     
     // Charts container
     QSplitter *friendChartSplitter = new QSplitter(Qt::Horizontal);
@@ -93,6 +110,7 @@ CumulativeStatsWidget::CumulativeStatsWidget(QWidget *parent)
             this, &CumulativeStatsWidget::updateTheme);
             
     modeToggleButton = new QPushButton(tr("Show Session Stats Only"), this);
+    modeToggleButton->setToolTip(tr("Click to view Lifetime Stats"));
     modeToggleButton->setCheckable(true);
     connect(modeToggleButton, &QPushButton::toggled, this, &CumulativeStatsWidget::toggleStatsMode);
     
@@ -125,13 +143,7 @@ CumulativeStatsWidget::CumulativeStatsWidget(QWidget *parent)
     
     friendsLayout->addWidget(friendChartSplitter, 3);
     friendsLayout->addWidget(peerTree, 1);
-    
-    tabWidget->addTab(friendsTab, tr("Friends"));
-    
-    // === SERVICES TAB ===
-    QWidget *servicesTab = new QWidget();
-    QVBoxLayout *servicesLayout = new QVBoxLayout(servicesTab);
-    
+
     // Charts container
     QSplitter *serviceChartSplitter = new QSplitter(Qt::Horizontal);
     
@@ -165,19 +177,18 @@ CumulativeStatsWidget::CumulativeStatsWidget(QWidget *parent)
     servicesLayout->addWidget(serviceChartSplitter, 3);
     servicesLayout->addWidget(serviceTree, 1);
     
-    tabWidget->addTab(servicesTab, tr("Services"));
-    
     // Clear button
     clearButton = new QPushButton(tr("Clear All Statistics"));
     connect(clearButton, &QPushButton::clicked, this, &CumulativeStatsWidget::clearStatistics);
     
     bottomLayout->addWidget(new QLabel(tr("Chart Theme:")));
     bottomLayout->addWidget(themeComboBox);
+    bottomLayout->addWidget(pageSelector); 
     bottomLayout->addStretch();
     bottomLayout->addWidget(modeToggleButton);
     bottomLayout->addWidget(clearButton);
 
-    mainLayout->addWidget(tabWidget);
+    mainLayout->addWidget(stackedWidget); 
     mainLayout->addLayout(bottomLayout);
     setLayout(mainLayout);
 }
@@ -188,8 +199,11 @@ CumulativeStatsWidget::~CumulativeStatsWidget()
 
 void CumulativeStatsWidget::updateDisplay()
 {
-    updatePeerStats();
-    updateServiceStats();
+    if (stackedWidget->currentIndex() == 0) {
+        updatePeerStats();
+    } else {
+        updateServiceStats();
+    }
 }
 
 void CumulativeStatsWidget::updatePeerStats()
@@ -512,4 +526,10 @@ void CumulativeStatsWidget::toggleStatsMode(bool checked)
     }
     
     updateDisplay(); // Refresh immediately
+}
+
+void CumulativeStatsWidget::handlePageSwitch(int index)
+{
+    stackedWidget->setCurrentIndex(index);
+    updateDisplay(); 
 }

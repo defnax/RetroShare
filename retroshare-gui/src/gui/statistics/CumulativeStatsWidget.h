@@ -33,6 +33,7 @@ class QTreeWidgetItem;
 class QTabWidget;
 class QPushButton;
 class QComboBox;
+class QStackedWidget;
 
 // Check if we are on Qt 6 or higher
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -66,6 +67,7 @@ private slots:
     void clearStatistics();
     void updateTheme(int index);
     void toggleStatsMode(bool checked);
+    void handlePageSwitch(int index);
 
 private:
     void updatePeerStats();
@@ -83,8 +85,13 @@ private:
     // Helper to format bytes
     QString formatSize(uint64_t bytes);
 
-    QTabWidget *tabWidget;
     QComboBox *themeComboBox;
+    
+    QStackedWidget *stackedWidget;
+    QComboBox *pageSelector;
+    
+    QWidget *peerPage;
+    QWidget *servicePage;
 
     // Peer tab
     QTreeWidget *peerTree;
