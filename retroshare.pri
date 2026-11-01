@@ -784,6 +784,10 @@ win32-g++|win32-clang-g++ {
         error(PREFIX is not set. Set either EXTERNAL_LIB_DIR or PREFIX_MSYS2.)
     }
 
+    # MSYS2 installs Qt5's module directories directly below include, while
+    # Qt6's live below include/qt6. Keep the selected Qt headers ahead of the
+    # general dependency path so moc and the compiler see the same Qt version.
+    contains(CONFIG, qt): INCLUDEPATH = $$[QT_INSTALL_HEADERS] $$INCLUDEPATH
     INCLUDEPATH *= $$system_path($${PREFIX}/include)
     !isEmpty(PREFIX_MSYS2) : INCLUDEPATH *= $$system_path($${PREFIX_MSYS2}/include)
 
