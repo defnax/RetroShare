@@ -1510,8 +1510,20 @@ bool NewFriendList::importFriendlist(QString &fileName, bool &errorPeers, bool &
     RsPeerId rsPeerID;
     RsPgpId rsPgpID;
 
+    // Validate both sections before adding peers or locking notifications.
+    for(const QString& section : {QStringLiteral("pgpIDs"), QStringLiteral("groups")})
+        if(root.elementsByTagName(section).size() != 1)
+        {
+            showXMLParsingError();
+            return false;
+        }
+
     // lock all events for faster processing
     RsAutoUpdatePage::lockAllEvents();
+    struct UnlockEvents
+    {
+        ~UnlockEvents() { RsAutoUpdatePage::unlockAllEvents(); }
+    } unlockEvents;
 
     // pgp and ssl IDs
     QDomElement pgpIDs;
@@ -1588,9 +1600,6 @@ bool NewFriendList::importFriendlist(QString &fileName, bool &errorPeers, bool &
         }
         group = group.nextSiblingElement("group");
     }
-
-    // unlock events
-    RsAutoUpdatePage::unlockAllEvents();
 
     return !(errorPeers || errorGroups);
 }

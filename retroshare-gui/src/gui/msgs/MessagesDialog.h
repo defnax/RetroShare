@@ -33,6 +33,8 @@
 
 class RSTreeWidgetItemCompareRole;
 class MessageWidget;
+class MailArchiveWidget;
+class QStackedWidget;
 class QTreeWidgetItem;
 class RsMessageModel;
 class MessageSortFilterProxyModel ;
@@ -152,6 +154,8 @@ private:
   //RSTreeWidgetItemCompareRole *mMessageCompareRole;
 
   MessageWidget *msgWidget;
+  MailArchiveWidget *mArchiveWidget;
+  QStackedWidget *mMailPages;
   RsMessageModel *mMessageModel;
   MessageSortFilterProxyModel *mMessageProxyModel;
 

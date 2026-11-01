@@ -53,6 +53,8 @@ class NewFriendList: public QWidget
 	Q_PROPERTY(QColor textColorStatusInactive READ textColorStatusInactive WRITE setTextColorStatusInactive)
 
 public:
+    bool exportFriendlist(QString &fileName);
+    bool importFriendlist(QString &fileName, bool &errorPeers, bool &errorGroups);
 	explicit NewFriendList(QWidget *parent = 0);
 	~NewFriendList();
 
@@ -140,8 +142,6 @@ private:
 	bool getGroupIdByName(const std::string& name, RsNodeGroupId& id);
 
 	bool importExportFriendlistFileDialog(QString &fileName, bool import);
-	bool exportFriendlist(QString &fileName);
-	bool importFriendlist(QString &fileName, bool &errorPeers, bool &errorGroups);
 
 	FriendListSortFilterProxyModel *mProxyModel ;
 private slots:

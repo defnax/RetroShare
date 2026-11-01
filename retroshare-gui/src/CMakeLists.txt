@@ -544,6 +544,8 @@ list(
 	src/gui/connect/FriendRecommendDialog.h 
 
 	src/gui/msgs/MessagesDialog.h 
+	src/gui/msgs/MailArchiveStore.h
+	src/gui/msgs/MailArchiveWidget.h
 	src/gui/msgs/MessageInterface.h 
 	src/gui/msgs/MessageComposer.h 
 	src/gui/msgs/MessageWindow.h 

@@ -506,6 +506,16 @@
             </property>
            </widget>
           </item>
+          <item row="16" column="0">
+           <widget class="QPushButton" name="exportLocationData">
+            <property name="text"><string>Export location data...</string></property>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QPushButton" name="importLocationData">
+            <property name="text"><string>Import location data...</string></property>
+           </widget>
+          </item>
           <item row="15" column="1">
            <widget class="QPushButton" name="exportfriendslist">
             <property name="text">

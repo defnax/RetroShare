@@ -477,6 +477,8 @@ HEADERS +=  rshare.h \
             gui/connect/PGPKeyDialog.h \
             gui/connect/FriendRecommendDialog.h \
             gui/msgs/MessagesDialog.h \
+            gui/msgs/MailArchiveStore.h \
+            gui/msgs/MailArchiveWidget.h \
             gui/msgs/MessageInterface.h \
             gui/msgs/MessageComposer.h \
             gui/msgs/MessageWindow.h \

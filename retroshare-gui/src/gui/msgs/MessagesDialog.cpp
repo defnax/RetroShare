@@ -38,6 +38,9 @@
 #include "gui/msgs/MessageInterface.h"
 #include "gui/msgs/MessageUserNotify.h"
 #include "gui/msgs/MessageWidget.h"
+#include "gui/msgs/MailArchiveWidget.h"
+#include <QStackedWidget>
+#include <retroshare/rsinit.h>
 #include "gui/msgs/TagsMenu.h"
 #include "gui/msgs/MessageModel.h"
 #include "gui/settings/rsharesettings.h"
@@ -93,6 +96,7 @@
 #define ROW_DRAFTBOX      2
 #define ROW_SENTBOX       3
 #define ROW_TRASHBOX      4
+#define ROW_ARCHIVE       5
 
 // #define DEBUG_MESSAGES_DIALOG 1
 
@@ -141,6 +145,15 @@ MessagesDialog::MessagesDialog(QWidget *parent)
 {
     /* Invoke the Qt Designer generated object setup routine */
     ui.setupUi(this);
+    ui.listWidget->addItem(new QListWidgetItem(
+            FilesDefs::getIconFromQtResourcePath(IMAGE_FOLDER), tr("Archive")));
+    mMailPages = new QStackedWidget(ui.listSplitter);
+    mMailPages->addWidget(ui.msgs_layoutWidget);
+    mArchiveWidget = new MailArchiveWidget(
+            QString::fromUtf8(RsAccounts::AccountDirectory().c_str()) + "/ImportedMailArchive.json",
+            mMailPages);
+    mMailPages->addWidget(mArchiveWidget);
+    mMailPages->setCurrentWidget(ui.msgs_layoutWidget);
 
     inProcessSettings = false;
     inChange = false;
@@ -603,6 +616,7 @@ void MessagesDialog::fillQuickView()
 
 int MessagesDialog::getSelectedMessages(QList<QString>& mid)
 {
+    if(ui.listWidget->currentRow() == ROW_ARCHIVE) { mid.clear(); return 0; }
 	//To check if the selection has more than one row.
 
 	mid.clear();
@@ -918,6 +932,23 @@ void MessagesDialog::changeBox(int box_row)
 	}
 
 	inChange = true;
+    const bool archive = box_row == ROW_ARCHIVE;
+    mMailPages->setCurrentWidget(archive ? static_cast<QWidget*>(mArchiveWidget) : ui.msgs_layoutWidget);
+    ui.quickViewWidget->setEnabled(!archive);
+    if(archive)
+    {
+        ui.quickViewWidget->setCurrentRow(-1);
+        mMessageModel->setCurrentBox(Rs::Mail::BoxName::BOX_NONE);
+        ui.messageTreeWidget->clearSelection();
+        ui.messageTreeWidget->setCurrentIndex(QModelIndex());
+        mCurrMsgId.clear();
+        msgWidget->fill(mCurrMsgId);
+        mArchiveWidget->reload();
+        inChange = false;
+        connectActions();
+        updateInterface();
+        return;
+    }
 
 	QListWidgetItem* item = ui.listWidget->item(box_row);
 
@@ -962,6 +993,7 @@ void MessagesDialog::changeBox(int box_row)
 	inChange = false;
 
     updateMessageSummaryList();
+    connectActions();
 }
 
 void MessagesDialog::resetQuickView(const QModelIndex& i)
@@ -1142,6 +1174,7 @@ void MessagesDialog::markWithJunk(bool checked)
 
 void MessagesDialog::insertMsgTxtAndFiles(const QModelIndex& proxy_index)
 {
+    if(ui.listWidget->currentRow() == ROW_ARCHIVE) { updateInterface(); return; }
     /* get its Ids */
     std::string mid;
 
@@ -1625,6 +1658,14 @@ void MessagesDialog::connectActions()
 	ui.actionReply->disconnect();
 	ui.actionReplyAll->disconnect();
 	ui.actionForward->disconnect();
+
+    if(tab == 0 && ui.listWidget->currentRow() == ROW_ARCHIVE)
+    {
+        for(auto* action : {ui.actionReply, ui.actionReplyAll, ui.actionForward,
+                           ui.actionPrint, ui.actionPrintPreview, ui.actionSaveAs})
+            action->setEnabled(false);
+        return;
+    }
 
 	if (msgWidget) {
 		// connect actions

@@ -52,6 +52,8 @@ class CryptoPage : public ConfigPage
       bool fileSaveAs();
       void showStats();
       void exportFriendsList();
+      void exportLocationData();
+      void importLocationData();
 
   private:
       QString fileName;
